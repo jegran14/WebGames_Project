@@ -30,8 +30,16 @@ package
 		public function set PosY(y:Number):void { _posActual.y = y; }
 		public function set Vx(value:Number):void {_posAnterior.x = PosX - value; }
 		public function set Vy(value:Number):void {_posAnterior.y = PosY - value; }
-		public function set SetX(value:Number):void {_posAnterior.x = value - Vx; }
-		public function set SetY(value:Number):void {_posAnterior.y = value - Vy; }
+		public function set SetX(value:Number):void 
+		{
+			_posAnterior.x = value - Vx; 
+			PosX = value;
+		}
+		public function set SetY(value:Number):void 
+		{
+			_posAnterior.y = value - Vy; 
+			PosY = value;
+		}
 		
 		public function get PosX():Number { return _posActual.x;}
 		public function get PosY():Number {return _posActual.y; }
