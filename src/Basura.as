@@ -28,10 +28,9 @@ package
 			{
 				var initX:int = Math.random() * stage.stageWidth;
 				var initY:int = Math.random() * stage.stageHeight;
-				var targetX:int = Math.random() * stage.stageWidth;
-				var targetY:int = Math.random() * stage.stageHeight;
+				var angle:Number = Math.random() * 2 * Math.PI;
 				
-				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, new VectorModel(initX, initY, targetX, targetY));
+				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
 				
 				pelotas.push(lasPelotasDeCarlos);
 				
@@ -45,27 +44,16 @@ package
 			{
 				for (var i:int = pelotas.length - 1; i >= 0; i--)
 				{
-					if (!boundariesCollisions(i))
-					{
-						var speed:Point = pelotas[i].Speed;
-						var newX:Number = pelotas[i].PosX + speed.x;
-						var newY:Number = pelotas[i].PosY + speed.y;
+					boundariesCollisions(pelotas[i]);
 			
-						pelotas[i].Update(newX, newY);
-					}
+					pelotas[i].UpdateMovement();
 				}
 			}
 		}
 		
-		private function boundariesCollisions(i:int):Boolean
-		{
-			var speed:Point = pelotas[i].Speed;
-			var ballVector:VectorModel = pelotas[i].Direction;
-			
-			var x:Number = pelotas[i].PosX + speed.x;
-			var y:Number = pelotas[i].PosY + speed.y;
-			
-			var v1:VectorModel = new VectorModel(pelotas[i].PosX, pelotas[i].PosY, x, y);
+		private function boundariesCollisions(b:Ball):void
+		{						
+			var v1:VectorModel = new VectorModel(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
 			
 			var v2:VectorModel;
 			
@@ -109,8 +97,11 @@ package
 					collisionForce_Vx = v1.dx * Math.abs(dp2);
 					collisionForce_Vy = v1.dy * Math.abs(dp2);
 					
-					pelotas[i].PosX = v1.a.x - collisionForce_Vx;
-					pelotas[i].PosY = v1.a.y - collisionForce_Vy;
+					b.SetX = v1.a.x - collisionForce_Vx;
+					b.SetY = v1.a.y - collisionForce_Vy;
+					
+					b.Vx = 0;
+					b.Vy = 0;
 					
 					var dp3:Number = VectorMath.dotProduct(v1, v2);
 					
@@ -128,15 +119,10 @@ package
 					var bounce_Vx:Number = p1_Vx + p2_Vx;
 					var bounce_Vy:Number = p1_Vy + p2_Vy;
 					
-					var newX:Number = v1.a.x + bounce_Vx;
-					var newY:Number = v1.a.y + bounce_Vy;
-					
-					pelotas[i].Update(newX, newY)
-					
-					return true;
+					b.Vx = bounce_Vx;
+					b.Vy = bounce_Vy;
 				}
 			}
-			return false;
 		}	
 	}
 
