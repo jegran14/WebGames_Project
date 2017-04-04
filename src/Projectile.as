@@ -14,9 +14,9 @@ package
 		private static var ballBitmap:Class;
 		private var ballImage:Image;
 		
-		public function Projectile(posX:Number, posY:Number, vector:VectorModel) 
+		public function Projectile(posX:Number, posY:Number, angle:Number) 
 		{
-			super(posX, posY, vector);
+			super(posX, posY, angle);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
@@ -53,17 +53,19 @@ package
 			this.addChild(ballImage);
 		}
 		
-		override public function Update(x:Number, y:Number):void
+		override public function UpdateMovement():void
 		{
-			_posAnterior.x = _posActual.x;
-			_posAnterior.y = _posActual.y;
+			var _tempX = PosX;
+			var _tempY = PosY;
 			
-			_posActual.x = x;
-			_posActual.y = y;
+			PosX += Vx;
+			PosY += Vy;
 			
+			_posAnterior.x =_tempX;
+			_posAnterior.y = _tempY;
 			
-			ballImage.x = x;
-			ballImage.y = y;
+			ballImage.x = PosX;
+			ballImage.y = PosY;
 		}
 		
 	}
