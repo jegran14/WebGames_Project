@@ -33,10 +33,10 @@ package
 			
 			pelotas = new Vector.<Enemies>();
 			
-			for (var i:int = 0; i < 10; i++)
+			for (var i:int = 0; i < 20; i++)
 			{
-				var initX:int = Math.random() * stage.stageWidth;
-				var initY:int = Math.random() * stage.stageHeight;
+				var initX:int = Math.random() * (stage.stageWidth-100)+50;
+				var initY:int = Math.random() * (stage.stageHeight-100)+50;
 				var angle:Number = Math.random() * 2 * Math.PI;
 				
 				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
