@@ -33,7 +33,7 @@ package
 			
 			pelotas = new Vector.<Enemies>();
 			
-			for (var i:int = 0; i < 20; i++)
+			for (var i:int = 0; i < 10; i++)
 			{
 				var initX:int = Math.random() * stage.stageWidth;
 				var initY:int = Math.random() * stage.stageHeight;
@@ -145,15 +145,13 @@ package
 		}	*/
 		
 		private function testBoundaries(b:Ball):void
-		{						
-			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
-			
+		{									
 			//Vector pared izquierda
-			v2.update(0, 0, 0, stage.stageHeight);
+			v2.update(0, stage.stageHeight, 0, 0);
 			collideWithBoundarie(b);
 
 			//Vector pared derecha
-			v2.update(stage.stageWidth, stage.stageHeight, stage.stageWidth, 0);
+			v2.update(stage.stageWidth, 0, stage.stageWidth, stage.stageHeight);
 			collideWithBoundarie(b);
 						
 			//Vector pared superior
@@ -169,22 +167,27 @@ package
 		{
 			v0.update(b.PosX, b.PosY, b.PosX + v2.ln.dx * b.getRadius(), b.PosY + v2.ln.dy * b.getRadius());
 			
+			v1.update(v0.b.x, v0.b.y, v0.b.x + b.Vx, v0.b.y + b.Vy);
+			
 			v3.update(v1.a.x, v1.a.y, v2.a.x, v2.a.y);
 			
 			var dp1:Number = VectorMath.dotProduct(v3, v2);
 			var dp2:Number = VectorMath.dotProduct(v3, v2.ln);
 			
+			var collisionForce_Vx:Number;
+			var collisionForce_Vy:Number;
 			var overlap:Number;
 			
 			if (dp1 > -v2.m && dp1 < 0)
 			{				
 				if (dp2 <= 0)
-				{					
+				{
 					overlap = b.getRadius() - v0.m;
+					
 					b.SetX = b.PosX - (overlap * v0.dx);
 					b.SetY = b.PosY - (overlap * v0.dy);
 					
-					var motion:VectorModel = new VectorModel(v0.b.x, v0.b.y, v0.b.x + b.Vx, v0.b.y + b.Vy);
+					var motion:VectorModel = new VectorModel(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
 					
 					var bounce:VectorModel = VectorMath.bounce(motion, v0.ln);
 					
