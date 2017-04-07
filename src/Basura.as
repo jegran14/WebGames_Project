@@ -40,8 +40,8 @@ package
 			
 			for (var i:int = 0; i < 10; i++)
 			{
-				var initX:int = Math.random() * (stage.stageWidth-100)+50;
-				var initY:int = Math.random() * (stage.stageHeight-100)+50;
+				var initX:int = Math.random() * stage.stageWidth;
+				var initY:int = Math.random() * stage.stageHeight;
 				var angle:Number = Math.random() * 2 * Math.PI;
 				
 				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
@@ -70,23 +70,22 @@ package
 			}
 		}
 		
-		/*private function testBoundaries(b:Ball):void
-		{						
-			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
-			
-			if (v1.b.x - b.getRadius() <= 0)
+		private function testBoundaries(b:Ball):void
+		{			
+			if (b.Vx < 0)
 			{
 				//Vector pared izquierda
-				v2.update(0, 0, 0, stage.stageHeight);
+				v2.update(0, stage.stageHeight, 0, 0);
 			}
-			
-			else if (v1.b.x + b.getRadius() >= stage.stageWidth)
+			else
 			{
 				//Vector pared derecha
-				v2.update(stage.stageWidth, stage.stageHeight, stage.stageWidth, 0);
+				v2.update(stage.stageWidth, 0, stage.stageWidth, stage.stageHeight);
 			}
-						
-			else if (v1.b.y - b.getRadius() < 0)
+			collideWithBoundarie(b);
+
+			
+			if (b.Vy < 0)
 			{
 				//Vector pared superior
 				v2.update(0, 0, stage.stageWidth, 0);
@@ -94,11 +93,14 @@ package
 			else
 			{
 				//Vector pared inferior
-				v2.update(stage.stageWidth, stage.stageHeight, 0, stage.stageHeight);
-			}
-			
-			v0.update(b.PosX, b.PosY, b.PosX + v2.ln.dx * b.getRadius(), b.PosY + v2.ln.dy * b.getRadius());
-			
+				v2.update(stage.stageWidth, stage.stageHeight, 0, stage.stageHeight);	
+			}			
+			collideWithBoundarie(b);
+		}
+		
+		/*private function collideWithBoundarie(b:Ball)
+		{
+			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
 			v3.update(v1.a.x, v1.a.y, v2.a.x, v2.a.y);
 			
 			var dp1:Number = VectorMath.dotProduct(v3, v2);
@@ -112,7 +114,7 @@ package
 			{				
 				if (dp2 <= 0)
 				{
-					/*collisionForce_Vx = v1.dx * Math.abs(dp2);
+					collisionForce_Vx = v1.dx * Math.abs(dp2);
 					collisionForce_Vy = v1.dy * Math.abs(dp2);
 					
 					b.SetX = v1.a.x - collisionForce_Vx;
@@ -139,39 +141,10 @@ package
 					
 					b.Vx = bounce_Vx;
 					b.Vy = bounce_Vy;
-					
-					overlap = b.getRadius() - v0.m;
-					b.SetX = b.PosX - (overlap * v0.dx);
-					b.SetY = b.PosY - (overlap * v0.dy);
-					
-					var motion:VectorModel = new VectorModel(v0.b.x, v0.b.y, v0.b.x + b.Vx, v0.b.y + b.Vy);
-					
-					var bounce:VectorModel = VectorMath.bounce(motion, v0.ln);
-					
-					b.Vx = bounce.vx;
-					b.Vy = bounce.vy;
 				}
 			}
-		}	*/
+		}*/
 		
-		private function testBoundaries(b:Ball):void
-		{									
-			//Vector pared izquierda
-			v2.update(0, stage.stageHeight, 0, 0);
-			collideWithBoundarie(b);
-
-			//Vector pared derecha
-			v2.update(stage.stageWidth, 0, stage.stageWidth, stage.stageHeight);
-			collideWithBoundarie(b);
-						
-			//Vector pared superior
-			v2.update(0, 0, stage.stageWidth, 0);
-			collideWithBoundarie(b);
-			
-			//Vector pared inferior
-			v2.update(stage.stageWidth, stage.stageHeight, 0, stage.stageHeight);	
-			collideWithBoundarie(b);
-		}
 		
 		private function collideWithBoundarie(b:Ball):void 
 		{
