@@ -13,6 +13,8 @@ package
 		private var v1:VectorModel;
 		private var v2:VectorModel;
 		private var v3:VectorModel;
+		private var v4:VectorModel;
+		private var v5:VectorModel;
 		
 		public function Basura() 
 		{
@@ -30,10 +32,13 @@ package
 			v1 = new VectorModel();
 			v2 = new VectorModel();
 			v3 = new VectorModel();
+			v4 = new VectorModel();
+			v5 = new VectorModel();
+			
 			
 			pelotas = new Vector.<Enemies>();
 			
-			for (var i:int = 0; i < 20; i++)
+			for (var i:int = 0; i < 10; i++)
 			{
 				var initX:int = Math.random() * (stage.stageWidth-100)+50;
 				var initY:int = Math.random() * (stage.stageHeight-100)+50;
@@ -51,9 +56,14 @@ package
 		{
 			if (pelotas.length > 0)
 			{
-				for (var i:int = pelotas.length - 1; i >= 0; i--)
-				{
-					testBoundaries(pelotas[i]);
+				for (var i:int = 0; i < pelotas.length; i++)
+				{					
+					for (var j:int = i+1; j < pelotas.length; j++ )
+					{
+						collisionWithBalls(pelotas[i], pelotas[j]);
+					}
+					
+					//testBoundaries(pelotas[i]);
 			
 					pelotas[i].UpdateMovement();
 				}
@@ -194,6 +204,51 @@ package
 					b.Vx = bounce.vx;
 					b.Vy = bounce.vy;
 				}
+			}
+		}
+		
+		private function collisionWithBalls(b1:Ball, b2:Ball):void
+		{
+			testBoundaries(b1);
+			testBoundaries(b2);
+			
+			v0.update(b1.PosX, b1.PosY, b2.PosX, b2.PosY);
+			
+			var totalRadii:Number = b1.getRadius() + b2.getRadius();
+			
+			if (v0.m < totalRadii)
+			{
+				var overlap:Number = totalRadii - v0.m;
+				
+				var collision_Vx:Number = Math.abs(v0.dx * overlap);
+				var collision_Vy:Number = Math.abs(v0.dy * overlap);
+				
+				var xSide:int;
+				var ySide:int;
+				
+				b1.PosX > b2.PosX ? xSide = 1 : xSide = -1;
+				b1.PosY > b2.PosY ? ySide = 1 : ySide = -1;
+				
+				b1.SetX = b1.PosX + (collision_Vx * xSide);
+				b1.SetY = b1.PosY + (collision_Vy * ySide);
+				
+				b2.SetX = b2.PosX + (collision_Vx * -xSide);
+				b2.SetY = b2.PosY + (collision_Vy * -ySide);
+				
+				v1.update(b1.PosX, b1.PosY, b1.PosX + b1.Vx, b1.PosY + b1.Vy);
+				v2.update(b2.PosX, b2.PosY, b2.PosX + b2.Vx, b2.PosY + b2.Vy);
+				
+				var p1a:VectorModel = VectorMath.project(v1, v0);
+				var p1b:VectorModel = VectorMath.project(v1, v0.ln);
+				
+				var p2a:VectorModel = VectorMath.project(v2, v0);
+				var p2b:VectorModel = VectorMath.project(v2, v0.ln);
+				
+				b1.Vx = p1b.vx + p2a.vx;
+				b1.Vy = p1b.vy + p2a.vy;
+				
+				b2.Vx = p1a.vx + p2b.vx;
+				b2.Vy = p1a.vy + p2b.vy;
 			}
 		}
 	}

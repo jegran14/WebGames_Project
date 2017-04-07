@@ -16,7 +16,7 @@ package
 		
 		public function Enemies(posX:Number, posY:Number, angle:Number) 
 		{
-			super(posX, posY, angle, 50);
+			super(posX, posY, angle, 5);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
