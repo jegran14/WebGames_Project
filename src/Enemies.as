@@ -27,8 +27,6 @@ package
 			create();
 		}
 		
-		public function get radius():Number {return ballImage.height; }
-		
 		//Private functions
 		private function create():void 
 		{
