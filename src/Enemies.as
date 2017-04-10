@@ -10,7 +10,7 @@ package
 	
 	public class Enemies extends Ball 
 	{
-		[Embed(source = "../media/graphics/enemy.png")]
+		[Embed(source = "../media/graphics/cube.png")]
 		private static var ballBitmap:Class;
 		private var ballImage:Image;
 		
