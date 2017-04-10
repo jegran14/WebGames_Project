@@ -1,20 +1,30 @@
 package 
 {
 	import com.friendsofed.vector.*;
+	import com.friendsofed.utils.TextBox;
 	import flash.geom.Point;
+	import flash.utils.Timer;
 	import starling.display.Sprite;
 	import starling.events.*;
+	import starling.text.TextField;
+    import flash.events.TimerEvent; 
 	
 	
 	public class Level extends Sprite
 	{
 		private var player:Cannon;
+		
 		private var proyectiles:Vector.<Projectile>;
 		private var pelotas:Vector.<Enemies>;
+		
 		private var v0:VectorModel;
 		private var v1:VectorModel;
 		private var v2:VectorModel;
 		private var v3:VectorModel;
+		
+		private var scoreText:TextField;
+		private var score:Score;
+		private var time:Timer;
 		
 		public function Level() 
 		{
@@ -57,6 +67,15 @@ package
 				
 				addChild(lasPelotasDeCarlos);
 			}
+			
+			//Configurar temporizador y puntuación
+			score = new Score();
+			
+			scoreText = new TextField (300, 100, "Score = 5000", "Verdana", 24, 0x880088 , true);
+			
+			addChild(scoreText);
+			
+			shortTimer();
 		}
 		
 		//Event handlers
@@ -83,6 +102,22 @@ package
 					shoot(touch.globalX, touch.globalY);
 				}
 			}
+		}
+		
+		
+		
+		//Controlar score
+		public function shortTimer():void 
+		{
+			var minuteTimer:Timer = new Timer (100, 0);
+			minuteTimer.start();
+			minuteTimer.addEventListener(TimerEvent.TIMER, ontick);
+		}
+		
+		private function ontick(e:TimerEvent):void 
+		{
+			score.updateScore(score);
+			scoreText.text = "Score = " + score.GetScore;
 		}
 		
 		//Crear un nuevo proyectil cuando se dispare, y ejecutar la animación del jugador
