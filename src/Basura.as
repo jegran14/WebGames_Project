@@ -1,5 +1,5 @@
 package 
-{	
+{
 	import com.friendsofed.vector.*;
 	import com.friendsofed.utils.TextBox;
 	import flash.geom.Point;
@@ -54,7 +54,5 @@ package
 		{
 			
 		}
-	}
-}
 	}
 }
