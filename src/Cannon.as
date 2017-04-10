@@ -7,30 +7,18 @@ package
 	import starling.events.*;
 	import starling.textures.Texture;
 	
-	public class Cannon extends Sprite
+	public class Cannon extends Ball
 	{		
 		[Embed(source = "../media/graphics/cannon.png")]
 		private static var cannonBitmap:Class;
 		private var cannon:Image;
-		private var _posX:Number;
-		private var _posY:Number;
 		
 		public function Cannon(posX:Number, posY:Number) 
 		{
-			super();
+			super(posX, posY, 0);
 		    addEventListener(Event.ADDED_TO_STAGE, onAdded);
-			
-			//Posiciones iniciales
-			_posX = posX;
-			_posY = posY;
 		}
-		
-		//Getters y Setters
-		public function set PosX(x:Number):void { _posX = x; }
-		public function set PosY(y:Number):void { _posY = y; }
-		public function get PosX():Number {	return _posX; }
-		public function get PosY():Number {	return _posY; }
-		
+				
 		//Event Handlers
 		private function onAdded(e:Event):void 
 		{
@@ -48,12 +36,14 @@ package
 			{
 				if (touch.phase == TouchPhase.HOVER || touch.phase == TouchPhase.MOVED)
 				{
-					rotate(new VectorModel(_posX, _posY, touch.globalX, touch.globalY));
+					rotate(new VectorModel(PosX, PosY, touch.globalX, touch.globalY));
 				}
 			}
 		}
 		
 		//Otras funciones
+		override public function getRadius():Number {return cannon.width / 2; }
+		
 		private function create():void
 		{
 			//Cargar textura
@@ -68,8 +58,8 @@ package
 			cannon.alignPivot();
 			
 			//Poner coordenadas
-			cannon.x = _posX;
-			cannon.y = _posY;
+			cannon.x = PosX;
+			cannon.y = PosY;
 			
 			//Añadirlo al stage
 			this.addChild(cannon);
