@@ -55,8 +55,8 @@ package
 		
 		override public function UpdateMovement():void
 		{
-			var _tempX = PosX;
-			var _tempY = PosY;
+			var _tempX:Number = PosX;
+			var _tempY:Number = PosY;
 			
 			PosX += Vx;
 			PosY += Vy;
