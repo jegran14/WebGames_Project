@@ -16,7 +16,7 @@ package
 		
 		public function Projectile(posX:Number, posY:Number, angle:Number) 
 		{
-			super(posX, posY, angle);
+			super(posX, posY, angle,15);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		

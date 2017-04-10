@@ -15,7 +15,7 @@ package
 		protected var _IsFreezed:Boolean;
 		
 		//Constructores
-		public function Ball(posX:Number, posY:Number, angle:Number, speed:Number = 10) 
+		public function Ball(posX:Number, posY:Number, angle:Number, speed:Number = 0) 
 		{
 			super();
 						

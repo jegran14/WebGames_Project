@@ -19,7 +19,7 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
-			_myStarling = new Starling(Basura, stage);
+			_myStarling = new Starling(Level, stage);
 			_myStarling.antiAliasing = 2;
 			_myStarling.start();
 		}
