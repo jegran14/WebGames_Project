@@ -8,10 +8,19 @@ package
 	import starling.events.*;
 	import starling.text.TextField;
     import flash.events.TimerEvent; 
+	import starling.textures.Texture;
+	import starling.display.Image;
+	import flash.display.Bitmap;
 	
 	
 	public class Level extends Sprite
 	{
+		
+		
+		[Embed(source = "../media/graphics/bg_blue.jpg")]
+		private static var ballBitmap:Class;
+		private var ballImage:Image;
+		
 		private var player:Cannon;
 		
 		private var proyectiles:Vector.<Projectile>;
@@ -24,7 +33,8 @@ package
 		
 		private var scoreText:TextField;
 		private var score:Score;
-		private var time:Timer;
+		private var minuteTimer:Timer;
+		private var finalScoreText:TextField;
 		
 		public function Level() 
 		{
@@ -35,6 +45,21 @@ package
 		private function onAdded(e:Event):void 
 		{			
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+			
+			//Cargar textura
+			var bitmap:Bitmap = new ballBitmap();
+			ballImage = new Image(Texture.fromBitmap(bitmap));
+			
+			
+			//cambiar pivote
+			ballImage.alignPivot();
+			ballImage.x = stage.stageWidth / 2;
+			ballImage.y = stage.stageHeight / 2;
+			
+			//Añadir al stage
+			this.addChild(ballImage)
+			
+			
 			
 			//Event handlers
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
@@ -71,7 +96,15 @@ package
 			//Configurar temporizador y puntuación
 			score = new Score();
 			
-			scoreText = new TextField (300, 100, "Score = 5000", "Verdana", 24, 0x880088 , true);
+			scoreText = new TextField (300, 100, "Score = 5000", "Verdana", 15, 0x550055 , true);
+			scoreText.alignPivot();
+			scoreText.x = 100;
+			scoreText.y = 20;
+			
+			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "Verdana", 30, 0x880000 , true);
+			finalScoreText.alignPivot();
+			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
+			finalScoreText.y =  stage.stageHeight / 2;
 			
 			addChild(scoreText);
 			
@@ -86,9 +119,13 @@ package
 			moveBalls();
 			
 			moveProjectile();
+			if (pelotas.length == 0){
+				endLevel();
+			}
 			
 			trace("proyectiles: " + proyectiles.length);
 			trace("pelotas: " +pelotas.length);
+			trace("score: " + score.GetTotalScore);
 		}
 		
 		protected function onTouch(e:TouchEvent):void 
@@ -109,7 +146,7 @@ package
 		//Controlar score
 		public function shortTimer():void 
 		{
-			var minuteTimer:Timer = new Timer (100, 0);
+			minuteTimer = new Timer (100, 0);
 			minuteTimer.start();
 			minuteTimer.addEventListener(TimerEvent.TIMER, ontick);
 		}
@@ -190,6 +227,7 @@ package
 						{
 							removeChild(pelotas[i]);
 							pelotas.removeAt(i);
+							score.addScore();
 							return;
 						}
 					}
@@ -338,6 +376,44 @@ package
 			
 			b2.Vx = p1a.vx + p2b.vx;
 			b2.Vy = p1a.vy + p2b.vy;
+		}
+		
+		//Final de partida
+		public function endLevel():void 
+		{
+			minuteTimer.stop();
+			minuteTimer.removeEventListener(TimerEvent.TIMER, ontick);
+			
+			
+			//Textos a mostrar
+			var showLevelScoreTextInStageMotherFucker:TextField = new TextField (300, 100, "Level score:", "Verdana", 16, 0x550055, false);
+			showLevelScoreTextInStageMotherFucker.alignPivot();
+			showLevelScoreTextInStageMotherFucker.x  = 0 + stage.stageWidth / 4;
+			showLevelScoreTextInStageMotherFucker.y =  stage.stageHeight / 2 - 50;
+			
+			var showTotalScoreTextInStageMotherFucker:TextField = new TextField (600, 100, "Total score:", "Verdana", 16, 0x550055, false);
+			showTotalScoreTextInStageMotherFucker.alignPivot();
+			showTotalScoreTextInStageMotherFucker.x  = stage.stageWidth - stage.stageWidth / 4;
+			showTotalScoreTextInStageMotherFucker.y =  stage.stageHeight / 2 - 50;
+			
+			
+			
+			finalScoreText.text = "" + score.GetTotalScore;
+			
+			stage.removeEventListener(TouchEvent.TOUCH, onTouch);
+			
+			scoreText.text = "" + score.GetScore;
+			scoreText.x = 0 + stage.stageWidth / 4;
+			scoreText.y = stage.stageHeight / 2;
+			scoreText.fontSize = 30;
+			
+			removeChild(player);
+			
+			addChild(finalScoreText);
+			addChild(showTotalScoreTextInStageMotherFucker);
+			addChild(showLevelScoreTextInStageMotherFucker);
+			
+			stage.color = 0x999999;
 		}
 				
 	}
