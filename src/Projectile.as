@@ -16,7 +16,7 @@ package
 		
 		public function Projectile(posX:Number, posY:Number, angle:Number) 
 		{
-			super(posX, posY, angle);
+			super(posX, posY, angle,15);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
@@ -55,8 +55,8 @@ package
 		
 		override public function UpdateMovement():void
 		{
-			var _tempX = PosX;
-			var _tempY = PosY;
+			var _tempX:Number = PosX;
+			var _tempY:Number = PosY;
 			
 			PosX += Vx;
 			PosY += Vy;
