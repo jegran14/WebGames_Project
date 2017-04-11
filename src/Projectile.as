@@ -27,6 +27,8 @@ package
 			create();
 		}
 		
+		override public function getRadius():Number {return (ballImage.width/2)*0.8; }
+		
 		//Private functions
 		private function create():void 
 		{
