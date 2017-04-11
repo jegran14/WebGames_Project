@@ -230,7 +230,12 @@ package
 							return;
 						}
 					}
-								
+					
+					if (collisionWithBalls(pelotas[i], player))
+					{
+						bounceWithPlayer(pelotas[i]);
+					}
+					
 					pelotas[i].UpdateMovement();
 				}
 			}
@@ -376,9 +381,20 @@ package
 			b2.Vy = p1a.vy + p2b.vy;
 		}
 		
-		private function bouceWithPlayer():void 
+		private function bounceWithPlayer(b:Ball):void 
 		{
+			var totalRadii:Number = b.getRadius() + player.getRadius();
+			var overlap:Number = totalRadii - v0.m;
 			
+			b.SetX = b.PosX - (overlap * v0.dx);
+			b.SetY = b.PosY - (overlap * v0.dy);
+			
+			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
+			
+			var bounce:VectorModel = VectorMath.bounce(v1, v0.ln);
+			
+			b.Vx = bounce.vx;
+			b.Vy = bounce.vy;
 		}
 		
 		//Final de partida
