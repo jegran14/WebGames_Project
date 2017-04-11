@@ -54,7 +54,7 @@ package
 		}
 		
 		
-		override public function getRadius():Number {return ballImage.width/2; }
+		override public function getRadius():Number {return (ballImage.width/2)*0.8; }
 		
 		override public function UpdateMovement():void
 		{

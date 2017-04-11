@@ -14,9 +14,7 @@ package
 	
 	
 	public class Level extends Sprite
-	{
-		
-		
+	{	
 		[Embed(source = "../media/graphics/bg_blue.jpg")]
 		private static var ballBitmap:Class;
 		private var ballImage:Image;
@@ -119,7 +117,8 @@ package
 			moveBalls();
 			
 			moveProjectile();
-			if (pelotas.length == 0){
+			
+			if (isLevelFinished()){
 				endLevel();
 			}
 			
@@ -231,7 +230,12 @@ package
 							return;
 						}
 					}
-								
+					
+					if (collisionWithBalls(pelotas[i], player))
+					{
+						bounceWithPlayer(pelotas[i]);
+					}
+					
 					pelotas[i].UpdateMovement();
 				}
 			}
@@ -278,8 +282,7 @@ package
 				return true;
 			}
 			
-			//Devolver falso en caso de que 
-			return false;
+			return b.PosX < 0 || b.PosY < 0 || b.PosX > stage.stageWidth || b.PosY > stage.stageHeight;
 		}
 		
 		//Comprobar la colisión con una barrera
@@ -378,12 +381,40 @@ package
 			b2.Vy = p1a.vy + p2b.vy;
 		}
 		
+		private function bounceWithPlayer(b:Ball):void 
+		{
+			var totalRadii:Number = b.getRadius() + player.getRadius();
+			var overlap:Number = totalRadii - v0.m;
+			
+			b.SetX = b.PosX - (overlap * v0.dx);
+			b.SetY = b.PosY - (overlap * v0.dy);
+			
+			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
+			
+			var bounce:VectorModel = VectorMath.bounce(v1, v0.ln);
+			
+			b.Vx = bounce.vx;
+			b.Vy = bounce.vy;
+		}
+		
 		//Final de partida
+		private function isLevelFinished():Boolean
+		{
+			return pelotas.length <= 0;
+		}
+		
 		public function endLevel():void 
 		{
+			//Parar temporizador
 			minuteTimer.stop();
 			minuteTimer.removeEventListener(TimerEvent.TIMER, ontick);
 			
+			//Limpiar la pantalla de proyectiles
+			for (var i:int = proyectiles.length - 1; i >= 0; i--)
+			{
+				removeChild(proyectiles[i]);
+				proyectiles.removeAt(i);
+			}
 			
 			//Textos a mostrar
 			var showLevelScoreTextInStageMotherFucker:TextField = new TextField (300, 100, "Level score:", "Verdana", 16, 0x550055, false);
