@@ -58,19 +58,22 @@ package
 		
 		override public function UpdateMovement():void
 		{
-			var _tempX:Number = PosX;
-			var _tempY:Number = PosY;
+			if (!IsFreezed)
+			{
+				var _tempX:Number = PosX;
+				var _tempY:Number = PosY;
+				
+				PosX += Vx;
+				PosY += Vy;
+				
+				_posAnterior.x =_tempX;
+				_posAnterior.y = _tempY;
+				
+				ballImage.x = PosX;
+				ballImage.y = PosY;
+			}
 			
-			PosX += Vx;
-			PosY += Vy;
-			
-			_posAnterior.x =_tempX;
-			_posAnterior.y = _tempY;
-			
-			ballImage.x = PosX;
-			ballImage.y = PosY;
 		}
-		
 	}
 
 }
