@@ -17,22 +17,22 @@ package
 	{	
 		[Embed(source = "../media/graphics/bg_blue.jpg")]
 		private static var ballBitmap:Class;
-		private var ballImage:Image;
+		protected var ballImage:Image;
 		
-		private var player:Cannon;
+		protected var player:Cannon;
 		
-		private var proyectiles:Vector.<Projectile>;
-		private var pelotas:Vector.<Enemies>;
+		protected var proyectiles:Vector.<Projectile>;
+		protected var pelotas:Vector.<Enemies>;
 		
-		private var v0:VectorModel;
-		private var v1:VectorModel;
-		private var v2:VectorModel;
-		private var v3:VectorModel;
+		protected var v0:VectorModel;
+		protected var v1:VectorModel;
+		protected var v2:VectorModel;
+		protected var v3:VectorModel;
 		
-		private var scoreText:TextField;
-		private var score:Score;
-		private var minuteTimer:Timer;
-		private var finalScoreText:TextField;
+		protected var scoreText:TextField;
+		protected var score:Score;
+		protected var minuteTimer:Timer;
+		protected var finalScoreText:TextField;
 		
 		public function Level() 
 		{
@@ -196,7 +196,7 @@ package
 			
 		}
 		
-		private function moveBalls():void
+		protected function moveBalls():void
 		{
 			if (pelotas.length > 0)
 			{
@@ -241,10 +241,8 @@ package
 			}
 		}
 		
-		//Funciones para los calculos de las colisiones
-		
 		//Seleccionar con que lateral se va a comprobar la colisión
-		private function testBoundaries(b:Ball):Boolean
+		protected function testBoundaries(b:Ball):Boolean
 		{	
 			//Comprobar dirección en el eje X para decidir con que pared comprobamos la colisión
 			if (b.Vx < 0)
@@ -309,7 +307,7 @@ package
 		}
 		
 		//Calcular rebote contra una de las barreras
-		private function bounceWithBoundarie(b:Ball):void
+		protected function bounceWithBoundarie(b:Ball):void
 		{
 			var collisionForce_Vx:Number;
 			var collisionForce_Vy:Number;
@@ -329,7 +327,7 @@ package
 		}
 		
 		//Comprobar colisión entre varios objetos herederos de la clase bola
-		private function collisionWithBalls(b1:Ball, b2:Ball):Boolean
+		protected function collisionWithBalls(b1:Ball, b2:Ball):Boolean
 		{			
 			v0.update(b1.PosX, b1.PosY, b2.PosX, b2.PosY);
 			
@@ -344,7 +342,7 @@ package
 		}
 		
 		//Calcular rebote entre varias bolas en movimiento
-		private function bounceBalls(b1:Ball, b2:Ball):void
+		protected function bounceBalls(b1:Ball, b2:Ball):void
 		{
 			var totalRadii:Number = b1.getRadius() + b2.getRadius();
 			
@@ -381,7 +379,7 @@ package
 			b2.Vy = p1a.vy + p2b.vy;
 		}
 		
-		private function bounceWithPlayer(b:Ball):void 
+		protected function bounceWithPlayer(b:Ball):void 
 		{
 			var totalRadii:Number = b.getRadius() + player.getRadius();
 			var overlap:Number = totalRadii - v0.m;
@@ -398,7 +396,7 @@ package
 		}
 		
 		//Final de partida
-		private function isLevelFinished():Boolean
+		protected function isLevelFinished():Boolean
 		{
 			return pelotas.length <= 0;
 		}
@@ -414,6 +412,13 @@ package
 			{
 				removeChild(proyectiles[i]);
 				proyectiles.removeAt(i);
+			}
+			
+			//Limpiar pantalla de pelotas en caso de que haya alguna
+			for (var j:int = pelotas.length - 1; j >= 0; j--)
+			{
+				removeChild(pelotas[j]);
+				pelotas.removeAt(j);
 			}
 			
 			//Textos a mostrar

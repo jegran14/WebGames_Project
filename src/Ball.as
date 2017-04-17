@@ -62,5 +62,15 @@ package
 			_posAnterior.x =_tempX;
 			_posAnterior.y = _tempY;
 		}
+		
+		public function freeze():void 
+		{
+			_IsFreezed = true;
+		}
+		
+		public function unfreeze():void 
+		{
+			_IsFreezed = false;
+		}
 	}
 }
