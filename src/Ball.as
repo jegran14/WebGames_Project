@@ -74,6 +74,10 @@ package
 		public function unfreeze():void 
 		{
 			_IsFreezed = false;
+			
+			var alpha:Number = Math.random() * 2 * Math.PI;
+			Vx = Speed*Math.cos(alpha);
+			Vy = Speed*Math.sin(alpha);
 		}
 	}
 }
