@@ -372,11 +372,20 @@ package
 			var p2a:VectorModel = VectorMath.project(v2, v0);
 			var p2b:VectorModel = VectorMath.project(v2, v0.ln);
 			
-			b1.Vx = p1b.vx + p2a.vx;
+			var bounce1:VectorModel = new VectorModel(0, 0, 0, 0, p1b.vx + p2a.vx, p1b.vy + p2a.vy);
+			var bounce2:VectorModel = new VectorModel(0, 0, 0, 0, p1a.vx + p2b.vx, p1a.vy + p2b.vy);
+			
+			b1.Vx = b1.Speed*bounce1.dx;
+			b1.Vy = b1.Speed*bounce1.dy;
+			
+			b2.Vx = b2.Speed*bounce2.dx;
+			b2.Vy = b2.Speed*bounce2.dy;
+		
+			/*b1.Vx = p1b.vx + p2a.vx;
 			b1.Vy = p1b.vy + p2a.vy;
 			
 			b2.Vx = p1a.vx + p2b.vx;
-			b2.Vy = p1a.vy + p2b.vy;
+			b2.Vy = p1a.vy + p2b.vy;*/
 		}
 		
 		protected function bounceWithPlayer(b:Ball):void 
