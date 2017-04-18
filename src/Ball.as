@@ -13,6 +13,7 @@ package
 		protected var _posActual:Point;
 		protected var _posAnterior:Point;
 		protected var _IsFreezed:Boolean;
+		protected var _speed:Number;
 		
 		//Constructores
 		public function Ball(posX:Number, posY:Number, angle:Number, speed:Number = 0) 
@@ -22,6 +23,8 @@ package
 			_posActual = new Point(posX, posY);
 			
 			_posAnterior = new Point( _posActual.x - Math.cos(angle) * speed, _posActual.y - Math.sin(angle) * speed);
+			
+			_speed = speed;
 		}
 		
 		
@@ -45,7 +48,7 @@ package
 		public function get PosY():Number {return _posActual.y; }
 		public function get Vx():Number { return PosX - _posAnterior.x; }
 		public function get Vy():Number { return PosY - _posAnterior.y;}
-			
+		public function get Speed():Number { return _speed; }
 		public function get IsFreezed():Boolean {return _IsFreezed; }
 				
 		//Public functions
