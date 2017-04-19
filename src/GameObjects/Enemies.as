@@ -1,6 +1,6 @@
-package 
+package GameObjects 
 {
-		import com.friendsofed.vector.*;
+	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
 	import flash.geom.Point;
 	import starling.display.Image;
@@ -8,10 +8,8 @@ package
 	import starling.events.*;
 	import starling.textures.Texture;
 	
-	public class Enemies extends Ball 
+	public class Enemies extends Ball
 	{
-		[Embed(source = "../media/graphics/cube.png")]
-		private static var ballBitmap:Class;
 		private var ballImage:Image;
 		
 		public function Enemies(posX:Number, posY:Number, angle:Number) 
@@ -31,8 +29,7 @@ package
 		private function create():void 
 		{
 			//Cargar textura
-			var bitmap:Bitmap = new ballBitmap();
-			ballImage = new Image(Texture.fromBitmap(bitmap));
+			ballImage = new Image(Assets.getTexture("EnemyCube"));
 			
 			//Escalar
 			ballImage.scaleX = 0.6;

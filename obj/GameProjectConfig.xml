@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'18/04/2017'</value>
+      <value>'19/04/2017'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -35,6 +35,7 @@
       <path-element>D:\Clase\2016 - 2017\Juegos web\WebGames_Project\src</path-element>
       <path-element>D:\Clase\2016 - 2017\Juegos web\Starling-Framework-1.8\starling\src</path-element>
       <path-element>D:\Clase\2016 - 2017\Juegos web\Advanced_games_design</path-element>
+      <path-element>D:\Clase\2016 - 2017\Juegos web\GreenSock-AS3</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>

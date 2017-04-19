@@ -1,5 +1,6 @@
 package
 {
+	import Levels.*;
 	import flash.display.Sprite;
 	import flash.events.Event;
 	import starling.core.Starling;
@@ -19,7 +20,7 @@ package
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			// entry point
-			_myStarling = new Starling(Level2, stage);
+			_myStarling = new Starling(Game, stage);
 			_myStarling.antiAliasing = 2;
 			_myStarling.start();
 		}

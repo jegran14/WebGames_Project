@@ -1,5 +1,6 @@
-package 
+package GameObjects 
 {
+	import GameObjects.Ball;
 	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
 	import flash.geom.Point;
@@ -10,8 +11,6 @@ package
 	
 	public class Projectile extends Ball 
 	{
-		[Embed(source = "../media/graphics/firegreen.png")]
-		private static var ballBitmap:Class;
 		private var ballImage:Image;
 		
 		public function Projectile(posX:Number, posY:Number, angle:Number) 
@@ -33,8 +32,7 @@ package
 		private function create():void 
 		{
 			//Cargar textura
-			var bitmap:Bitmap = new ballBitmap();
-			ballImage = new Image(Texture.fromBitmap(bitmap));
+			ballImage = new Image(Assets.getTexture("Projectile"));
 			
 			//Escalar
 			/*ballImage.scaleX = 0.05;

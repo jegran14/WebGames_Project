@@ -1,6 +1,6 @@
-package 
+package Levels 
 {
-	public class Level2 extends Level 
+	public class Level2 extends Levels.Level 
 	{
 		private var freezedCount:int;
 		
