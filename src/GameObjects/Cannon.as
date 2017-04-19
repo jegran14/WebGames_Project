@@ -1,4 +1,4 @@
-package 
+package GameObjects 
 {
 	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
@@ -9,8 +9,6 @@ package
 	
 	public class Cannon extends Ball
 	{		
-		[Embed(source = "../media/graphics/cannon.png")]
-		private static var cannonBitmap:Class;
 		private var cannon:Image;
 		
 		public function Cannon(posX:Number, posY:Number) 
@@ -47,8 +45,7 @@ package
 		private function create():void
 		{
 			//Cargar textura
-			var bitmap:Bitmap = new cannonBitmap();
-			cannon = new Image(Texture.fromBitmap(bitmap));
+			cannon = new Image(Assets.getTexture("Player"));;
 			
 			//Escalar
 			//cannon.scaleX = 0.7;

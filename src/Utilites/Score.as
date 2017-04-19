@@ -1,4 +1,4 @@
-package 
+package Utilites 
 {
 	import flash.utils.Timer;
 	import starling.text.TextField;

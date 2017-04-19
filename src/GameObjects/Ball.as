@@ -1,4 +1,4 @@
-package 
+package GameObjects 
 {
 	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
@@ -76,8 +76,8 @@ package
 			_IsFreezed = false;
 			
 			var alpha:Number = Math.random() * 2 * Math.PI;
-			Vx = Speed*Math.cos(alpha);
-			Vy = Speed*Math.sin(alpha);
+			Vx = Speed * Math.cos(alpha);
+			Vy = Speed * Math.sin(alpha);
 		}
 	}
 }

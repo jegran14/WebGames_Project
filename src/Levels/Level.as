@@ -1,5 +1,7 @@
-package 
+package Levels 
 {
+	import GameObjects.*;
+	import Utilites.*;
 	import com.friendsofed.vector.*;
 	import com.friendsofed.utils.TextBox;
 	import flash.geom.Point;
@@ -15,9 +17,7 @@ package
 	
 	public class Level extends Sprite
 	{	
-		[Embed(source = "../media/graphics/bg_blue.jpg")]
-		private static var ballBitmap:Class;
-		protected var ballImage:Image;
+		protected var bg:Image;
 		
 		protected var player:Cannon;
 		
@@ -42,26 +42,28 @@ package
 		
 		private function onAdded(e:Event):void 
 		{			
+			drawGame();
+		}
+		
+		private function drawGame():void 
+		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			//Cargar textura
-			var bitmap:Bitmap = new ballBitmap();
-			ballImage = new Image(Texture.fromBitmap(bitmap));
+			bg = new Image(Assets.getTexture("BlueBg"));
 			
 			
 			//cambiar pivote
-			ballImage.alignPivot();
-			ballImage.x = stage.stageWidth / 2;
-			ballImage.y = stage.stageHeight / 2;
+			bg.alignPivot();
+			bg.x = stage.stageWidth / 2;
+			bg.y = stage.stageHeight / 2;
 			
 			//Añadir al stage
-			this.addChild(ballImage)
+			this.addChild(bg)
 			
 			
 			
-			//Event handlers
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			
 			
 			//Inicializar vector
 			proyectiles = new Vector.<Projectile>();
@@ -103,12 +105,28 @@ package
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
+		}
+		
+		//Control de visibilidad del nivel
+		public function disposeTemporarily():void 
+		{
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			
+			visible = false;
+		}
+		
+		public function initialize():void 
+		{
+			//Event handlers
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			addChild(scoreText);
 			
 			shortTimer();
+			
+			visible = true;
 		}
-		
 		//Event handlers
 		
 		private function onEnterFrame(e:Event):void 
@@ -121,10 +139,6 @@ package
 			if (isLevelFinished()){
 				endLevel();
 			}
-			
-			trace("proyectiles: " + proyectiles.length);
-			trace("pelotas: " +pelotas.length);
-			trace("score: " + score.GetTotalScore);
 		}
 		
 		protected function onTouch(e:TouchEvent):void 
@@ -139,8 +153,6 @@ package
 				}
 			}
 		}
-		
-		
 		
 		//Controlar score
 		public function shortTimer():void 
@@ -166,7 +178,7 @@ package
 			
 			var aX:Number = player.height
 			
-			var proyectil:Ball = new Projectile(player.PosX, player.PosY, direction.angle);
+			var proyectil:Projectile = new Projectile(player.PosX, player.PosY, direction.angle);
 			
 			proyectiles.push(proyectil);
 			
@@ -372,20 +384,20 @@ package
 			var p2a:VectorModel = VectorMath.project(v2, v0);
 			var p2b:VectorModel = VectorMath.project(v2, v0.ln);
 			
-			var bounce1:VectorModel = new VectorModel(0, 0, 0, 0, p1b.vx + p2a.vx, p1b.vy + p2a.vy);
+			/*var bounce1:VectorModel = new VectorModel(0, 0, 0, 0, p1b.vx + p2a.vx, p1b.vy + p2a.vy);
 			var bounce2:VectorModel = new VectorModel(0, 0, 0, 0, p1a.vx + p2b.vx, p1a.vy + p2b.vy);
 			
 			b1.Vx = b1.Speed*bounce1.dx;
 			b1.Vy = b1.Speed*bounce1.dy;
 			
 			b2.Vx = b2.Speed*bounce2.dx;
-			b2.Vy = b2.Speed*bounce2.dy;
+			b2.Vy = b2.Speed*bounce2.dy;*/
 		
-			/*b1.Vx = p1b.vx + p2a.vx;
+			b1.Vx = p1b.vx + p2a.vx;
 			b1.Vy = p1b.vy + p2a.vy;
 			
 			b2.Vx = p1a.vx + p2b.vx;
-			b2.Vy = p1a.vy + p2b.vy;*/
+			b2.Vy = p1a.vy + p2b.vy;
 		}
 		
 		protected function bounceWithPlayer(b:Ball):void 
