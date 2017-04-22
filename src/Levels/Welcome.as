@@ -83,11 +83,15 @@ package Levels
 			hero.x = 100;
 			hero.y = 0 - hero.height;
 			hero.rotation = Math.PI/2
-			
-			TweenLite.to(hero, 2, {x:190});
-			
-			this.addEventListener(Event.ENTER_FRAME, heroAnimation);
 			hero.alignPivot();
+			
+			TweenLite.to(hero, 2, {x:190, onComplete:initMenu});
+			
+			this.addEventListener(Event.ENTER_FRAME, heroAnimation);			
+		}
+		
+		private function initMenu():void 
+		{
 			addEventListener(TouchEvent.TOUCH, onTouch);
 		}
 		
