@@ -2,6 +2,7 @@ package GameObjects
 {
 	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
+	import flash.geom.Point;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.*;
@@ -16,7 +17,10 @@ package GameObjects
 			super(posX, posY, 0);
 		    addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
-				
+			
+		public function get bulletStartX():Number{ return PosX + cannon.width/2; }
+		public function get bulletStartY():Number{ return PosY + cannon.height/2 - 23; }
+		
 		//Event Handlers
 		private function onAdded(e:Event):void 
 		{
@@ -64,7 +68,7 @@ package GameObjects
 		
 		private function rotate(vector:VectorModel):void
 		{
-			cannon.rotation = vector.angle + Math.PI/2;
+			cannon.rotation = vector.angle;
 		}
 		
 		public function Shoot():void
