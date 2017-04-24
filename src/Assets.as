@@ -13,14 +13,14 @@ package
 		[Embed(source = "../media/graphics/firegreen.png")]
 		public static const Projectile:Class;
 		
-		[Embed(source = "../media/graphics/cannon.png")]
+		[Embed(source = "../media/graphics/rubik_ingame.png")]
 		public static const Player:Class;
 		
 		[Embed(source = "../media/graphics/bg_blue.jpg")]
 		public static const BlueBg:Class;
 		
-		[Embed(source = "../media/graphics/bg_pink.jpg")]
-		public static const PinkBg:Class;
+		[Embed(source = "../media/graphics/menu_bg.jpg")]
+		public static const MenuBg:Class;
 		
 		[Embed(source = "../media/graphics/Level1Btn.png")]
 		public static const Lvl1Btn:Class;

@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'23/04/2017'</value>
+      <value>'24/04/2017'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,15 +32,15 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>D:\Clase\2016 - 2017\Juegos web\WebGames_Project\src</path-element>
-      <path-element>D:\Clase\2016 - 2017\Juegos web\Starling-Framework-1.8\starling\src</path-element>
-      <path-element>D:\Clase\2016 - 2017\Juegos web\Advanced_games_design</path-element>
-      <path-element>D:\Clase\2016 - 2017\Juegos web\GreenSock-AS3</path-element>
+      <path-element>D:\UJI\Segundo semestre\Diseño Web\Proyecto\WebGames_Project\src</path-element>
+      <path-element>D:\UJI\Segundo semestre\Diseño Web\Starling-Framework-1.8\Starling-Framework-1.8\starling\src</path-element>
+      <path-element>C:\Users\charl\Downloads\GreenSock-AS3\GreenSock-AS3</path-element>
+      <path-element>D:\UJI\Segundo semestre\Diseño Web\Proyecto\WebGames_Project\libraries\Advanced_games_design</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
   </compiler>
   <file-specs>
-    <path-element>D:\Clase\2016 - 2017\Juegos web\WebGames_Project\src\Main.as</path-element>
+    <path-element>D:\UJI\Segundo semestre\Diseño Web\Proyecto\WebGames_Project\src\Main.as</path-element>
   </file-specs>
   <default-background-color>#FFFFFF</default-background-color>
   <default-frame-rate>30</default-frame-rate>

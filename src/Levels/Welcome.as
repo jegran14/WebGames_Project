@@ -31,7 +31,7 @@ package Levels
 		
 		private function drawScreen():void
 		{
-			bg = new Image(Assets.getTexture("PinkBg"));
+			bg = new Image(Assets.getTexture("MenuBg"));
 			addChild(bg);
 			
 			hero = new Image(Assets.getTexture("Player"));

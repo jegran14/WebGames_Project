@@ -2,12 +2,12 @@ package Levels
 {
 	public class Level2 extends Levels.Level 
 	{
-		private var freezedCount:int;
+		private var frostCount:int;
 		
 		public function Level2() 
 		{
 			super();
-			freezedCount = 0;
+			frostCount = 0;
 		}
 		
 		//Comprobar colisiones
@@ -43,13 +43,13 @@ package Levels
 							if (pelotas[i].IsFreezed)
 							{
 								pelotas[i].unfreeze();
-								freezedCount--;
+								frostCount--;
 								score.substractScore();
 							}
 							else
 							{
 								pelotas[i].freeze();
-								freezedCount++;
+								frostCount++;
 								score.addScore();
 							}
 								
@@ -71,7 +71,7 @@ package Levels
 		
 		override protected function isLevelFinished():Boolean 
 		{
-			return freezedCount == pelotas.length;
+			return frostCount == pelotas.length;
 		}
 		
 	}
