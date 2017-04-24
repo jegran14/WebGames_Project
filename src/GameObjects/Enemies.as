@@ -1,6 +1,6 @@
-package 
+package GameObjects 
 {
-		import com.friendsofed.vector.*;
+	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
 	import flash.geom.Point;
 	import starling.display.Image;
@@ -8,10 +8,8 @@ package
 	import starling.events.*;
 	import starling.textures.Texture;
 	
-	public class Enemies extends Ball 
+	public class Enemies extends Ball
 	{
-		[Embed(source = "../media/graphics/cube.png")]
-		private static var ballBitmap:Class;
 		private var ballImage:Image;
 		
 		public function Enemies(posX:Number, posY:Number, angle:Number) 
@@ -27,14 +25,11 @@ package
 			create();
 		}
 		
-		public function get radius():Number {return ballImage.height; }
-		
 		//Private functions
 		private function create():void 
 		{
 			//Cargar textura
-			var bitmap:Bitmap = new ballBitmap();
-			ballImage = new Image(Texture.fromBitmap(bitmap));
+			ballImage = new Image(Assets.getTexture("EnemyCube"));
 			
 			//Escalar
 			ballImage.scaleX = 0.6;
@@ -56,23 +51,26 @@ package
 		}
 		
 		
-		override public function getRadius():Number {return ballImage.width/2; }
+		override public function getRadius():Number {return (ballImage.width/2)*0.8; }
 		
 		override public function UpdateMovement():void
 		{
-			var _tempX:Number = PosX;
-			var _tempY:Number = PosY;
+			if (!IsFreezed)
+			{
+				var _tempX:Number = PosX;
+				var _tempY:Number = PosY;
+				
+				PosX += Vx;
+				PosY += Vy;
+				
+				_posAnterior.x =_tempX;
+				_posAnterior.y = _tempY;
+				
+				ballImage.x = PosX;
+				ballImage.y = PosY;
+			}
 			
-			PosX += Vx;
-			PosY += Vy;
-			
-			_posAnterior.x =_tempX;
-			_posAnterior.y = _tempY;
-			
-			ballImage.x = PosX;
-			ballImage.y = PosY;
 		}
-		
 	}
 
 }

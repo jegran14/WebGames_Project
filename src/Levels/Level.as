@@ -1,5 +1,7 @@
-package 
+package Levels 
 {
+	import GameObjects.*;
+	import Utilites.*;
 	import com.friendsofed.vector.*;
 	import com.friendsofed.utils.TextBox;
 	import flash.geom.Point;
@@ -14,27 +16,23 @@ package
 	
 	
 	public class Level extends Sprite
-	{
+	{	
+		protected var bg:Image;
 		
+		protected var player:Cannon;
 		
-		[Embed(source = "../media/graphics/bg_blue.jpg")]
-		private static var ballBitmap:Class;
-		private var ballImage:Image;
+		protected var proyectiles:Vector.<Projectile>;
+		protected var pelotas:Vector.<Enemies>;
 		
-		private var player:Cannon;
+		protected var v0:VectorModel;
+		protected var v1:VectorModel;
+		protected var v2:VectorModel;
+		protected var v3:VectorModel;
 		
-		private var proyectiles:Vector.<Projectile>;
-		private var pelotas:Vector.<Enemies>;
-		
-		private var v0:VectorModel;
-		private var v1:VectorModel;
-		private var v2:VectorModel;
-		private var v3:VectorModel;
-		
-		private var scoreText:TextField;
-		private var score:Score;
-		private var minuteTimer:Timer;
-		private var finalScoreText:TextField;
+		protected var scoreText:TextField;
+		protected var score:Score;
+		protected var minuteTimer:Timer;
+		protected var finalScoreText:TextField;
 		
 		public function Level() 
 		{
@@ -44,26 +42,28 @@ package
 		
 		private function onAdded(e:Event):void 
 		{			
+			drawGame();
+		}
+		
+		private function drawGame():void 
+		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			//Cargar textura
-			var bitmap:Bitmap = new ballBitmap();
-			ballImage = new Image(Texture.fromBitmap(bitmap));
+			bg = new Image(Assets.getTexture("BlueBg"));
 			
 			
 			//cambiar pivote
-			ballImage.alignPivot();
-			ballImage.x = stage.stageWidth / 2;
-			ballImage.y = stage.stageHeight / 2;
+			bg.alignPivot();
+			bg.x = stage.stageWidth / 2;
+			bg.y = stage.stageHeight / 2;
 			
 			//Añadir al stage
-			this.addChild(ballImage)
+			this.addChild(bg)
 			
 			
 			
-			//Event handlers
-			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			
 			
 			//Inicializar vector
 			proyectiles = new Vector.<Projectile>();
@@ -105,12 +105,28 @@ package
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
+		}
+		
+		//Control de visibilidad del nivel
+		public function disposeTemporarily():void 
+		{
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			
+			visible = false;
+		}
+		
+		public function initialize():void 
+		{
+			//Event handlers
+			addEventListener(Event.ENTER_FRAME, onEnterFrame);
+			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			addChild(scoreText);
 			
 			shortTimer();
+			
+			visible = true;
 		}
-		
 		//Event handlers
 		
 		private function onEnterFrame(e:Event):void 
@@ -119,13 +135,10 @@ package
 			moveBalls();
 			
 			moveProjectile();
-			if (pelotas.length == 0){
+			
+			if (isLevelFinished()){
 				endLevel();
 			}
-			
-			trace("proyectiles: " + proyectiles.length);
-			trace("pelotas: " +pelotas.length);
-			trace("score: " + score.GetTotalScore);
 		}
 		
 		protected function onTouch(e:TouchEvent):void 
@@ -140,8 +153,6 @@ package
 				}
 			}
 		}
-		
-		
 		
 		//Controlar score
 		public function shortTimer():void 
@@ -167,7 +178,7 @@ package
 			
 			var aX:Number = player.height
 			
-			var proyectil:Ball = new Projectile(player.PosX, player.PosY, direction.angle);
+			var proyectil:Projectile = new Projectile(player.PosX, player.PosY, direction.angle);
 			
 			proyectiles.push(proyectil);
 			
@@ -197,7 +208,7 @@ package
 			
 		}
 		
-		private function moveBalls():void
+		protected function moveBalls():void
 		{
 			if (pelotas.length > 0)
 			{
@@ -231,16 +242,19 @@ package
 							return;
 						}
 					}
-								
+					
+					if (collisionWithBalls(pelotas[i], player))
+					{
+						bounceWithPlayer(pelotas[i]);
+					}
+					
 					pelotas[i].UpdateMovement();
 				}
 			}
 		}
 		
-		//Funciones para los calculos de las colisiones
-		
 		//Seleccionar con que lateral se va a comprobar la colisión
-		private function testBoundaries(b:Ball):Boolean
+		protected function testBoundaries(b:Ball):Boolean
 		{	
 			//Comprobar dirección en el eje X para decidir con que pared comprobamos la colisión
 			if (b.Vx < 0)
@@ -278,8 +292,7 @@ package
 				return true;
 			}
 			
-			//Devolver falso en caso de que 
-			return false;
+			return b.PosX < 0 || b.PosY < 0 || b.PosX > stage.stageWidth || b.PosY > stage.stageHeight;
 		}
 		
 		//Comprobar la colisión con una barrera
@@ -306,7 +319,7 @@ package
 		}
 		
 		//Calcular rebote contra una de las barreras
-		private function bounceWithBoundarie(b:Ball):void
+		protected function bounceWithBoundarie(b:Ball):void
 		{
 			var collisionForce_Vx:Number;
 			var collisionForce_Vy:Number;
@@ -326,7 +339,7 @@ package
 		}
 		
 		//Comprobar colisión entre varios objetos herederos de la clase bola
-		private function collisionWithBalls(b1:Ball, b2:Ball):Boolean
+		protected function collisionWithBalls(b1:Ball, b2:Ball):Boolean
 		{			
 			v0.update(b1.PosX, b1.PosY, b2.PosX, b2.PosY);
 			
@@ -341,7 +354,7 @@ package
 		}
 		
 		//Calcular rebote entre varias bolas en movimiento
-		private function bounceBalls(b1:Ball, b2:Ball):void
+		protected function bounceBalls(b1:Ball, b2:Ball):void
 		{
 			var totalRadii:Number = b1.getRadius() + b2.getRadius();
 			
@@ -371,6 +384,15 @@ package
 			var p2a:VectorModel = VectorMath.project(v2, v0);
 			var p2b:VectorModel = VectorMath.project(v2, v0.ln);
 			
+			/*var bounce1:VectorModel = new VectorModel(0, 0, 0, 0, p1b.vx + p2a.vx, p1b.vy + p2a.vy);
+			var bounce2:VectorModel = new VectorModel(0, 0, 0, 0, p1a.vx + p2b.vx, p1a.vy + p2b.vy);
+			
+			b1.Vx = b1.Speed*bounce1.dx;
+			b1.Vy = b1.Speed*bounce1.dy;
+			
+			b2.Vx = b2.Speed*bounce2.dx;
+			b2.Vy = b2.Speed*bounce2.dy;*/
+		
 			b1.Vx = p1b.vx + p2a.vx;
 			b1.Vy = p1b.vy + p2a.vy;
 			
@@ -378,12 +400,47 @@ package
 			b2.Vy = p1a.vy + p2b.vy;
 		}
 		
+		protected function bounceWithPlayer(b:Ball):void 
+		{
+			var totalRadii:Number = b.getRadius() + player.getRadius();
+			var overlap:Number = totalRadii - v0.m;
+			
+			b.SetX = b.PosX - (overlap * v0.dx);
+			b.SetY = b.PosY - (overlap * v0.dy);
+			
+			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
+			
+			var bounce:VectorModel = VectorMath.bounce(v1, v0.ln);
+			
+			b.Vx = bounce.vx;
+			b.Vy = bounce.vy;
+		}
+		
 		//Final de partida
+		protected function isLevelFinished():Boolean
+		{
+			return pelotas.length <= 0;
+		}
+		
 		public function endLevel():void 
 		{
+			//Parar temporizador
 			minuteTimer.stop();
 			minuteTimer.removeEventListener(TimerEvent.TIMER, ontick);
 			
+			//Limpiar la pantalla de proyectiles
+			for (var i:int = proyectiles.length - 1; i >= 0; i--)
+			{
+				removeChild(proyectiles[i]);
+				proyectiles.removeAt(i);
+			}
+			
+			//Limpiar pantalla de pelotas en caso de que haya alguna
+			for (var j:int = pelotas.length - 1; j >= 0; j--)
+			{
+				removeChild(pelotas[j]);
+				pelotas.removeAt(j);
+			}
 			
 			//Textos a mostrar
 			var showLevelScoreTextInStageMotherFucker:TextField = new TextField (300, 100, "Level score:", "Verdana", 16, 0x550055, false);

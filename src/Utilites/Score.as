@@ -1,11 +1,8 @@
-package 
+package Utilites 
 {
 	import flash.utils.Timer;
 	import starling.text.TextField;
-	/**
-	 * ...
-	 * @author 
-	 */
+
 	public class Score 
 	{
 		private var scoreTime:int;
@@ -39,6 +36,11 @@ package
 		}
 		public function addScore ():void{
 			scoreBalls += scoreTime * 0.1;
+		}
+		
+		public function substractScore():void
+		{
+			scoreBalls -= scoreTime * 0.1;
 		}
 	}
 
