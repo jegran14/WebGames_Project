@@ -62,9 +62,6 @@ package Levels
 			this.addChild(bg)
 			
 			
-			
-			
-			
 			//Inicializar vector
 			proyectiles = new Vector.<Projectile>();
 			pelotas = new Vector.<Enemies>();
@@ -176,9 +173,10 @@ package Levels
 			
 			var direction:VectorModel = new VectorModel(player.PosX, player.PosY, mPosx, mPosY);
 			
-			var aX:Number = player.height
+			var bulletX:Number = player.bulletStartX;
+			var bulletY:Number = player.bulletStartY;
 			
-			var proyectil:Projectile = new Projectile(player.PosX, player.PosY, direction.angle);
+			var proyectil:Projectile = new Projectile(bulletX, bulletY, direction.angle);
 			
 			proyectiles.push(proyectil);
 			
