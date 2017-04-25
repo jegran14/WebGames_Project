@@ -11,6 +11,9 @@ package GameObjects
 	public class Cannon extends Ball
 	{		
 		private var cannon:Image;
+		private var bx:Number;
+		private var by:Number;
+		private var bulletRad:Number;
 		
 		public function Cannon(posX:Number, posY:Number) 
 		{
@@ -18,8 +21,8 @@ package GameObjects
 		    addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 			
-		public function get bulletStartX():Number{ return PosX + cannon.width/2; }
-		public function get bulletStartY():Number{ return PosY + cannon.height/2 - 23; }
+		public function get bulletStartX():Number{ return bx + bulletRad * Math.cos(cannon.rotation); }
+		public function get bulletStartY():Number{ return by + bulletRad * Math.sin(cannon.rotation); }
 		
 		//Event Handlers
 		private function onAdded(e:Event):void 
@@ -61,6 +64,16 @@ package GameObjects
 			//Poner coordenadas
 			cannon.x = PosX;
 			cannon.y = PosY;
+			
+			//Distancia hasta la pistola
+			bx =  PosX + cannon.width / 2;
+			by =  PosY - cannon.height / 4;
+			
+			var disX:Number = Math.abs(bx - PosX);
+			var disY:Number = Math.abs(PosY - by);
+			
+			bulletRad = Math.sqrt(disX * disX + disY * disY);
+			
 			
 			//Añadirlo al stage
 			this.addChild(cannon);
