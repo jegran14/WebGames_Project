@@ -71,6 +71,23 @@ package GameObjects
 			}
 			
 		}
+		
+		public function freeze():void 
+		{
+			_IsFreezed = true;
+			ballImage.alpha = 0.5;
+		}
+		
+		public function unfreeze():void 
+		{
+			_IsFreezed = false;
+			
+			ballImage.alpha = 1;
+			
+			var alpha:Number = Math.random() * 2 * Math.PI;
+			Vx = Speed * Math.cos(alpha);
+			Vy = Speed * Math.sin(alpha);
+		}
 	}
 
 }
