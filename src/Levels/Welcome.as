@@ -110,11 +110,11 @@ package Levels
 		{
 			this.visible = true;
 			
-			hero.x = 100;
-			hero.y = 0 - hero.height;
+			hero.x = 190;
+			hero.y = 500 ;
 			hero.alignPivot();
 			
-			TweenLite.to(hero, 2, {x:190});
+			TweenLite.to(hero, 6, {y:225});
 			
 			this.addEventListener(Event.ENTER_FRAME, heroAnimation);			
 		}
