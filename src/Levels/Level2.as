@@ -1,5 +1,7 @@
 package Levels 
 {
+	import starling.events.Event;
+	import starling.display.Image;
 	public class Level2 extends Levels.Level 
 	{
 		private var frostCount:int;
@@ -8,6 +10,14 @@ package Levels
 		{
 			super();
 			frostCount = 0;
+			addEventListener(Event.ADDED_TO_STAGE, onAdded);
+		}
+		
+		private function onAdded(e:Event):void 
+		{
+			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+			bg.texture = Assets.getTexture("PinkBg");
+			
 		}
 		
 		//Comprobar colisiones

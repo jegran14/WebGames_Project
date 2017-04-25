@@ -22,6 +22,9 @@ package
 		[Embed(source = "../media/graphics/bg_blue.jpg")]
 		public static const BlueBg:Class;
 		
+		[Embed(source = "../media/graphics/bg_pink.jpg")]
+		public static const PinkBg:Class;
+		
 		[Embed(source = "../media/graphics/menu_bg.jpg")]
 		public static const MenuBg:Class;
 		
