@@ -68,6 +68,7 @@ package GameObjects
 				
 				ballImage.x = PosX;
 				ballImage.y = PosY;
+				ballImage.rotation += 0.1;
 			}
 			
 		}
