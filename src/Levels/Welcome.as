@@ -112,21 +112,27 @@ package Levels
 			
 			this.visible = true;
 			
-			hero.x = 0 - hero.width;
-			hero.y = stage.stageHeight;
+			hero.x = 220;
+			hero.y = 0 - hero.y/2;
+			
 			hero.alignPivot();
 			
-			TweenLite.to(hero, 2, {x:190, y:225});
+			TweenLite.to(hero, 6, {x:190, y:225, onComplete:finishtranslate});
 			
-			this.addEventListener(Event.ENTER_FRAME, heroAnimation);	
+		}
+		
+		private function finishtranslate():void 
+		{
+			
+			addEventListener(Event.ENTER_FRAME, heroAnimation);
 		}
 		
 		
 		private function heroAnimation(e:Event):void 
 		{
 			var currentDate:Date = new Date();
-			hero.y = 225 + (Math.cos(currentDate.getTime() * 0.002) * 5);
-
+			hero.y = 225 + (Math.cos(currentDate.getTime() * 0.002)*6);
+			hero.x = 190 + (Math.sin(currentDate.getTime() * 0.002)*6);
 		}
 		
 		public function disposeTemporarily():void 
