@@ -13,6 +13,7 @@ package Utilites
 		{
 			super();
 			scoreTime = 5000;
+			scoreBalls = 0;
 		}
 			
 		public function set SetScore (setValue:int):void{

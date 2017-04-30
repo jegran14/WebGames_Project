@@ -41,15 +41,19 @@ package
 			switch (e.params.id) 
 			{
 				case "level1":
-					trace("you");
 					screenWelcome.disposeTemporarily();
 					level1.initialize();
 					break;
 				
 				case "level2":
-					trace("yau");
 					screenWelcome.disposeTemporarily();
 					level2.initialize();
+					break;
+				
+				case "frmLvlToMenu":
+					var lvl:Level = e.target as Level;
+					lvl.disposeTemporarily();
+					screenWelcome.initialize();
 					break;
 			}
 		}
