@@ -30,7 +30,7 @@ package Levels
 		
 		private function onAddedToStage(event:Event):void 
 		{
-			drawScreen();
+			initialize();
 		}
 		
 		private function drawScreen():void
@@ -108,15 +108,17 @@ package Levels
 		
 		public function initialize():void 
 		{
+			drawScreen();
+			
 			this.visible = true;
 			
-			hero.x = 190;
-			hero.y = 500 ;
+			hero.x = 0 - hero.width;
+			hero.y = stage.stageHeight;
 			hero.alignPivot();
 			
-			TweenLite.to(hero, 6, {y:225});
+			TweenLite.to(hero, 2, {x:190, y:225});
 			
-			this.addEventListener(Event.ENTER_FRAME, heroAnimation);			
+			this.addEventListener(Event.ENTER_FRAME, heroAnimation);	
 		}
 		
 		
