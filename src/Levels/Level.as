@@ -4,8 +4,10 @@ package Levels
 	import Utilites.*;
 	import com.friendsofed.vector.*;
 	import com.friendsofed.utils.TextBox;
+	import events.NavigationEnvent;
 	import flash.geom.Point;
 	import flash.utils.Timer;
+	import starling.display.Button;
 	import starling.display.Sprite;
 	import starling.events.*;
 	import starling.text.TextField;
@@ -33,6 +35,8 @@ package Levels
 		protected var score:Score;
 		protected var minuteTimer:Timer;
 		protected var finalScoreText:TextField;
+		
+		protected var menuButton:Button;
 		
 		public function Level() 
 		{
@@ -93,15 +97,25 @@ package Levels
 			//Configurar temporizador y puntuación
 			score = new Score();
 			
-			scoreText = new TextField (300, 100, "Score = 5000", "Verdana", 15, 0x550055 , true);
+			scoreText = new TextField (300, 100, "Score = 5000", "Verdana", 15, 0xFFFFFF , true);
 			scoreText.alignPivot();
 			scoreText.x = 100;
 			scoreText.y = 20;
+			addChild(scoreText);
 			
 			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "Verdana", 30, 0x880000 , true);
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
+			
+			//Inicializar y ocultar boton para volver al menu
+			menuButton = new Button(Assets.getTexture("Lvl3Btn_off"));
+			menuButton.overState = Assets.getTexture("Lvl3Btn_over");
+			menuButton.alignPivot();
+			menuButton.x = stage.stageWidth / 2;
+			menuButton.y = stage.stageHeight - 20 - menuButton.height / 2;
+			menuButton.visible = false;
+			addChild(menuButton);
 		}
 		
 		//Control de visibilidad del nivel
@@ -118,15 +132,15 @@ package Levels
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			
-			addChild(scoreText);
-			
 			shortTimer();
 			
 			visible = true;
+			
+			drawGame();
 		}
 		//Event handlers
 		
-		private function onEnterFrame(e:Event):void 
+		protected function onEnterFrame(e:Event):void 
 		{
 			//move objects
 			moveBalls();
@@ -441,15 +455,15 @@ package Levels
 			}
 			
 			//Textos a mostrar
-			var showLevelScoreTextInStageMotherFucker:TextField = new TextField (300, 100, "Level score:", "Verdana", 16, 0x550055, false);
-			showLevelScoreTextInStageMotherFucker.alignPivot();
-			showLevelScoreTextInStageMotherFucker.x  = 0 + stage.stageWidth / 4;
-			showLevelScoreTextInStageMotherFucker.y =  stage.stageHeight / 2 - 50;
+			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana", 16, 0xFFFFFF, false);
+			showLevelScoreText.alignPivot();
+			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
+			showLevelScoreText.y =  stage.stageHeight / 2 - 50;
 			
-			var showTotalScoreTextInStageMotherFucker:TextField = new TextField (600, 100, "Total score:", "Verdana", 16, 0x550055, false);
-			showTotalScoreTextInStageMotherFucker.alignPivot();
-			showTotalScoreTextInStageMotherFucker.x  = stage.stageWidth - stage.stageWidth / 4;
-			showTotalScoreTextInStageMotherFucker.y =  stage.stageHeight / 2 - 50;
+			var showTotalScoreText:TextField = new TextField (600, 100, "Total score:", "Verdana", 16, 0xFFFFFF, false);
+			showTotalScoreText.alignPivot();
+			showTotalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
+			showTotalScoreText.y =  stage.stageHeight / 2 - 50;
 			
 			
 			
@@ -463,14 +477,20 @@ package Levels
 			scoreText.fontSize = 30;
 			
 			removeChild(player);
-			
+
 			addChild(finalScoreText);
-			addChild(showTotalScoreTextInStageMotherFucker);
-			addChild(showLevelScoreTextInStageMotherFucker);
+			addChild(showTotalScoreText);
+			addChild(showLevelScoreText);
 			
-			stage.color = 0x999999;
+			//Show button and enable the trigger ivent
+			addEventListener(Event.TRIGGERED, onButtonClick);
+			menuButton.visible = true;
+		}	
+		
+		private function onButtonClick(e:Event):void 
+		{
+			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
 		}
-				
 	}
 
 }

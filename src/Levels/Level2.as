@@ -84,6 +84,13 @@ package Levels
 			return frostCount == pelotas.length;
 		}
 		
+		override public function disposeTemporarily():void 
+		{
+			removeEventListener(Event.ENTER_FRAME, onEnterFrame);
+			frostCount = 0;
+			visible = false;
+		}
+		
 	}
 
 }
