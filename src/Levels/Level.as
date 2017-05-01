@@ -157,7 +157,10 @@ package Levels
 					moveProjectile();
 			
 					if (isLevelFinished())
+					{
+						state = "end"
 						endLevel();
+					}
 					break;
 					
 				case "start":
