@@ -105,11 +105,11 @@ package Levels
 			finalScoreText.y =  stage.stageHeight / 2;
 			
 			//Inicializar y ocultar boton para volver al menu
-			menuButton = new Button(Assets.getTexture("Lvl3Btn_off"));
-			menuButton.overState = Assets.getTexture("Lvl3Btn_over");
+			menuButton = new Button(Assets.getTexture("BackBtnOff"));
+			menuButton.overState = Assets.getTexture("BackBtnOn");
 			menuButton.alignPivot();
-			menuButton.x = stage.stageWidth / 2;
-			menuButton.y = stage.stageHeight - 20 - menuButton.height / 2;
+			menuButton.x = stage.stageWidth - 50;
+			menuButton.y = 20;
 			menuButton.visible = false;
 			addChild(menuButton);
 			
