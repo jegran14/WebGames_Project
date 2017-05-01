@@ -1,16 +1,23 @@
 package 
 {
 	import events.NavigationEnvent;
+	import flash.net.URLRequest;
 	import starling.display.Sprite;
 	import starling.events.*;
 	import Levels.*;
+	import flash.media.*;
 	
 	public class Game extends Sprite 
 	{
+		
+		private var levelSong:Sound = new Sound(new URLRequest("../media/sounds/levelSong.mp3")); // make sure you use the proper path!
+		private var myChannel:SoundChannel = new SoundChannel();
+		
+		
 		private var screenWelcome:Welcome;
 		private var level1:Level;
 		private var level2:Level2;
-		
+
 		public function Game() 
 		{
 			super();
@@ -19,6 +26,8 @@ package
 		
 		private function onAdded(e:Event):void 
 		{
+			
+			
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			addEventListener(NavigationEnvent.CHANGE_SCREEN, onChangeScreen);
@@ -38,22 +47,29 @@ package
 		
 		private function onChangeScreen(e:NavigationEnvent):void 
 		{
+			
 			switch (e.params.id) 
 			{
 				case "level1":
 					screenWelcome.disposeTemporarily();
 					level1.initialize();
+					myChannel.stop();
+					myChannel = levelSong.play(0, int.MAX_VALUE);
 					break;
 				
 				case "level2":
 					screenWelcome.disposeTemporarily();
 					level2.initialize();
+					myChannel.stop();
+					myChannel = levelSong.play(0,int.MAX_VALUE);
 					break;
 				
 				case "frmLvlToMenu":
 					var lvl:Level = e.target as Level;
 					lvl.disposeTemporarily();
 					screenWelcome.initialize();
+					myChannel.stop();
+					
 					break;
 			}
 		}
