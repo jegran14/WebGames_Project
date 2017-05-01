@@ -7,6 +7,7 @@ package GameObjects
 	import starling.display.Sprite;
 	import starling.events.*;
 	import starling.textures.Texture;
+	import flash.media.Sound;
 	
 	public class Cannon extends Ball
 	{		
@@ -14,6 +15,7 @@ package GameObjects
 		private var bx:Number;
 		private var by:Number;
 		private var bulletRad:Number;
+		private var laserGun:Sound = new Assets.LaserGun(); 
 		
 		public function Cannon(posX:Number, posY:Number) 
 		{
@@ -93,6 +95,8 @@ package GameObjects
 		public function Shoot():void
 		{
 			
+			laserGun.play();
+		
 		}
 	}
 }
