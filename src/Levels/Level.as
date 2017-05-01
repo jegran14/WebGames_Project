@@ -99,7 +99,7 @@ package Levels
 			scoreText.y = 20;
 			addChild(scoreText);
 			
-			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 30, 0x880000 , false);
+			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 35, 0x880000 , false);
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
@@ -480,12 +480,12 @@ package Levels
 			}
 			
 			//Textos a mostrar
-			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "MyFont",25, 0xFFFFFF, true);
+			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana",20, 0xFFFFFF, true);
 			showLevelScoreText.alignPivot();
 			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
 			showLevelScoreText.y =  stage.stageHeight / 2 - 50;
 			
-			var showTotalScoreText:TextField = new TextField (600, 100, "Total score:", "MyFont", 25, 0xFFFFFF, true);
+			var showTotalScoreText:TextField = new TextField (600, 100, "Total score:", "Verdana", 20, 0xFFFFFF, true);
 			showTotalScoreText.alignPivot();
 			showTotalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			showTotalScoreText.y =  stage.stageHeight / 2 - 50;
@@ -499,7 +499,7 @@ package Levels
 			scoreText.text = "" + score.GetScore;
 			scoreText.x = 0 + stage.stageWidth / 4;
 			scoreText.y = stage.stageHeight / 2;
-			scoreText.fontSize = 30;
+			scoreText.fontSize = 35;
 			
 			removeChild(player);
 

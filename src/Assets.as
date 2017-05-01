@@ -67,6 +67,9 @@ package
 		[Embed(source = "../media/fonts/American Captain.TTF", fontFamily = "MyFont", embedAsCFF = "false")]
 		public static var myFont:Class;
 		
+		[Embed(source="../media/sounds/laserGun.mp3")]
+		public static const LaserGun:Class;
+
 		private static var gameTextures:Dictionary = new Dictionary();
 		
 		public static function getTexture(name:String):Texture
