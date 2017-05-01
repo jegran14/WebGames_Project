@@ -93,13 +93,13 @@ package Levels
 			//Configurar temporizador y puntuación
 			score = new Score();
 			
-			scoreText = new TextField (300, 100, "Score = 5000", "Verdana", 15, 0xFFFFFF , true);
+			scoreText = new TextField (300, 100, "Score = 5000", "MyFont", 30, 0xFFFFFF , false);
 			scoreText.alignPivot();
 			scoreText.x = 100;
 			scoreText.y = 20;
 			addChild(scoreText);
 			
-			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "Verdana", 30, 0x880000 , true);
+			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 30, 0x880000 , false);
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
@@ -480,12 +480,12 @@ package Levels
 			}
 			
 			//Textos a mostrar
-			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana", 16, 0xFFFFFF, false);
+			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "MyFont",25, 0xFFFFFF, true);
 			showLevelScoreText.alignPivot();
 			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
 			showLevelScoreText.y =  stage.stageHeight / 2 - 50;
 			
-			var showTotalScoreText:TextField = new TextField (600, 100, "Total score:", "Verdana", 16, 0xFFFFFF, false);
+			var showTotalScoreText:TextField = new TextField (600, 100, "Total score:", "MyFont", 25, 0xFFFFFF, true);
 			showTotalScoreText.alignPivot();
 			showTotalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			showTotalScoreText.y =  stage.stageHeight / 2 - 50;

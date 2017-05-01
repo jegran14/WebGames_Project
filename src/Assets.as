@@ -64,6 +64,9 @@ package
 		[Embed(source = "../media/graphics/level_three.jpg")]
 		public static const levelThree:Class;
 		
+		[Embed(source = "../media/fonts/American Captain.TTF", fontFamily = "MyFont", embedAsCFF = "false")]
+		public static var myFont:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
 		
 		public static function getTexture(name:String):Texture
