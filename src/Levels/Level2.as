@@ -8,7 +8,7 @@ package Levels
 		
 		public function Level2() 
 		{
-			super();
+			super(11,"PinkBg");
 			frostCount = 0;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
@@ -16,8 +16,6 @@ package Levels
 		private function onAdded(e:Event):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
-			bg.texture = Assets.getTexture("PinkBg");
-			
 		}
 		
 		//Comprobar colisiones
@@ -81,7 +79,7 @@ package Levels
 		
 		override protected function isLevelFinished():Boolean 
 		{
-			return frostCount == pelotas.length;
+			return frostCount == nball;
 		}
 		
 		override public function disposeTemporarily():void 
