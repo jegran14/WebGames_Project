@@ -16,7 +16,6 @@ package Levels
 	import starling.display.Image;
 	import flash.display.Bitmap;
 	
-	
 	public class Level extends Sprite
 	{	
 		protected var bg:Image;
@@ -42,7 +41,7 @@ package Levels
 		
 		protected var state:String;
 		
-		public function Level(_nbolas:int = 10, _bg = "BlueBg") 
+		public function Level(_nbolas:int = 10, _bg:String = "BlueBg") 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
