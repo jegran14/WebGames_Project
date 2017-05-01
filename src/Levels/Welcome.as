@@ -110,22 +110,20 @@ package Levels
 		{
 			this.visible = true;
 			
-			//Desplazamiento hasta la posicion final
-			hero.x = 200;
-			hero.y = 0  ;
+			hero.x = 190;
+			hero.y = 500 ;
 			hero.alignPivot();
-			TweenLite.to(hero, 2, {x:190, y:225});
 			
-			//Sin movimiento de animación en estatico
-			//this.addEventListener(Event.ENTER_FRAME, heroAnimation);			
+			TweenLite.to(hero, 6, {y:225});
 			
+			this.addEventListener(Event.ENTER_FRAME, heroAnimation);			
 		}
+		
 		
 		private function heroAnimation(e:Event):void 
 		{
 			var currentDate:Date = new Date();
 			hero.y = 225 + (Math.cos(currentDate.getTime() * 0.002) * 5);
-			hero.x = 190 + (Math.sin(currentDate.getTime() * 0.002) * 3);
 
 		}
 		
