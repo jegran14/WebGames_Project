@@ -26,6 +26,8 @@ package Levels
 		protected var proyectiles:Vector.<Projectile>;
 		protected var pelotas:Vector.<Enemies>;
 		
+		protected var nball:int;
+		
 		protected var v0:VectorModel;
 		protected var v1:VectorModel;
 		protected var v2:VectorModel;
@@ -38,41 +40,36 @@ package Levels
 		
 		protected var menuButton:Button;
 		
-		public function Level() 
+		protected var state:String;
+		
+		public function Level(_nbolas:int = 10, _bg = "BlueBg") 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
+			//Cargar textura
+			bg = new Image(Assets.getTexture(_bg));
+			nball = _nbolas;
 		}
 		
 		private function onAdded(e:Event):void 
-		{			
-			drawGame();
+		{		
+			//initialize();
 		}
 		
 		private function drawGame():void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
-			//Cargar textura
-			bg = new Image(Assets.getTexture("BlueBg"));
+			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			
 			
-			//cambiar pivote
-			bg.alignPivot();
-			bg.x = stage.stageWidth / 2;
-			bg.y = stage.stageHeight / 2;
-			
-			//Añadir al stage
-			this.addChild(bg)
 			
 			
 			//Inicializar vector
 			proyectiles = new Vector.<Projectile>();
 			pelotas = new Vector.<Enemies>();
 			
-			//Cosas del nivel
-			player = new Cannon(stage.stageWidth / 2, stage.stageHeight / 2);
-			addChild(player);		
+			//Cosas del nivel		
 			
 			//inicialización de los vectores para los cálculos de colisión
 			v0 = new VectorModel();
@@ -81,7 +78,7 @@ package Levels
 			v3 = new VectorModel();	
 			
 			//Rellenar array de pelotas
-			for (var i:int = 0; i < 15; i++)
+			for (var i:int = 0; i < nball; i++)
 			{
 				var initX:int = Math.random() * stage.stageWidth;
 				var initY:int = Math.random() * stage.stageHeight;
@@ -116,6 +113,8 @@ package Levels
 			menuButton.y = stage.stageHeight - 20 - menuButton.height / 2;
 			menuButton.visible = false;
 			addChild(menuButton);
+			
+			shortTimer();
 		}
 		
 		//Control de visibilidad del nivel
@@ -130,26 +129,53 @@ package Levels
 		{
 			//Event handlers
 			addEventListener(Event.ENTER_FRAME, onEnterFrame);
-			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			
-			shortTimer();
+			//cambiar pivote
+			bg.alignPivot();
+			bg.x = stage.stageWidth / 2;
+			bg.y = stage.stageHeight / 2;
+			
+			//Añadir al stage
+			this.addChild(bg)
+			
+			player = new Cannon(stage.stageWidth / 2, 0 - 70);
+			addChild(player);
 			
 			visible = true;
 			
-			drawGame();
+			state = "start";
 		}
-		//Event handlers
 		
+		//Event handlers
 		protected function onEnterFrame(e:Event):void 
 		{
-			//move objects
-			moveBalls();
+			switch (state) 
+			{
+				case "playing":
+					//move objects
+					moveBalls();
 			
-			moveProjectile();
+					moveProjectile();
 			
-			if (isLevelFinished()){
-				endLevel();
+					if (isLevelFinished())
+						endLevel();
+					break;
+					
+				case "start":
+					if (startPlayerAnimation()) 
+					{
+						state = "playing";
+						drawGame();
+					}
+					break;
 			}
+		}
+		
+		private function startPlayerAnimation():Boolean
+		{
+			player.PosY += 5;
+			player.UpdateImage();
+			return player.PosY == stage.stageHeight/2;
 		}
 		
 		protected function onTouch(e:TouchEvent):void 
