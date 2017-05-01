@@ -84,6 +84,12 @@ package GameObjects
 			cannon.rotation = vector.angle;
 		}
 		
+		public function UpdateImage():void 
+		{
+			cannon.x = PosX;
+			cannon.y = PosY;
+		}
+		
 		public function Shoot():void
 		{
 			
