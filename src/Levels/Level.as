@@ -108,8 +108,8 @@ package Levels
 			menuButton = new Button(Assets.getTexture("BackBtnOff"));
 			menuButton.overState = Assets.getTexture("BackBtnOn");
 			menuButton.alignPivot();
-			menuButton.x = stage.stageWidth - 50;
-			menuButton.y = 20;
+			menuButton.x = stage.stageWidth - 10 - menuButton.width;
+			menuButton.y = 10 + menuButton.height;
 			menuButton.visible = false;
 			addChild(menuButton);
 			
