@@ -47,7 +47,7 @@ package GameObjects
 			
 			//rotation
 			var direction:VectorModel = new VectorModel(_posActual.x, _posActual.y, _posAnterior.x, _posAnterior.y)
-			ballImage.rotation = direction.angle - Math.PI/2;
+			ballImage.rotation = direction.angle;
 			
 			//Añadir al stage
 			this.addChild(ballImage);

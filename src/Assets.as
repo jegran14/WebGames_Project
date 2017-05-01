@@ -10,7 +10,7 @@ package
 		[Embed(source = "../media/graphics/cube.png")]
 		public static const EnemyCube:Class;
 		
-		[Embed(source = "../media/graphics/firegreen.png")]
+		[Embed(source = "../media/graphics/laser.png")]
 		public static const Projectile:Class;
 		
 		[Embed(source = "../media/graphics/rubik_ingame.png")]
@@ -63,6 +63,12 @@ package
 		
 		[Embed(source = "../media/graphics/level_three.jpg")]
 		public static const levelThree:Class;
+		
+		[Embed(source = "../media/graphics/back_off.png")]
+		public static const BackBtnOff:Class;
+		
+		[Embed(source = "../media/graphics/back_on.png")]
+		public static const BackBtnOn:Class;
 		
 		[Embed(source = "../media/fonts/American Captain.TTF", fontFamily = "MyFont", embedAsCFF = "false")]
 		public static var myFont:Class;
