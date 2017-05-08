@@ -11,6 +11,7 @@ package
 	{
 		
 		private var levelSong:Sound = new Sound(new URLRequest("../media/sounds/levelSong.mp3")); // make sure you use the proper path!
+		private var welcomeSong:Sound = new Sound (new URLRequest("../media/sounds/WelcomeSong.mp3"));
 		private var myChannel:SoundChannel = new SoundChannel();
 		
 		
@@ -47,6 +48,7 @@ package
 			
 			screenWelcome = new Welcome();
 			addChild(screenWelcome);
+			myChannel = welcomeSong.play(0, int.MAX_VALUE);
 			screenWelcome.initialize();
 		}
 		
@@ -81,6 +83,7 @@ package
 					lvl.disposeTemporarily();
 					screenWelcome.initialize();
 					myChannel.stop();
+					myChannel = welcomeSong.play(0, int.MAX_VALUE);
 					
 					break;
 			}
