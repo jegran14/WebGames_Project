@@ -13,6 +13,9 @@ package
 		[Embed(source = "../media/graphics/laser.png")]
 		public static const Projectile:Class;
 		
+		[Embed(source = "../media/graphics/center_trans.png")]
+		public static const Shield:Class;
+		
 		[Embed(source = "../media/graphics/rubik_ingame.png")]
 		public static const Player:Class;
 		
