@@ -58,8 +58,8 @@ package
 				case "level1":
 					screenWelcome.disposeTemporarily();
 					level1.initialize();
-					myChannel.stop();
-					myChannel = levelSong.play(0, int.MAX_VALUE);
+					//myChannel.stop();
+					//myChannel = levelSong.play(0, int.MAX_VALUE);
 					break;
 				
 				case "level2":
@@ -72,15 +72,15 @@ package
 				case "level3":
 				screenWelcome.disposeTemporarily();
 				level3.initialize();
-				myChannel.stop();
-				myChannel = levelSong.play(0,int.MAX_VALUE);
+				//myChannel.stop();
+				//myChannel = levelSong.play(0,int.MAX_VALUE);
 				break;
 				
 				case "frmLvlToMenu":
 					var lvl:Level = e.target as Level;
 					lvl.disposeTemporarily();
 					screenWelcome.initialize();
-					myChannel.stop();
+					//myChannel.stop();
 					
 					break;
 			}
