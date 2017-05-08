@@ -56,6 +56,9 @@ package Levels
 					{
 						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
+							removeChild(proyectiles[k]);
+							proyectiles.removeAt(k);
+							
 							if (pelotas[i].CubeScale <= 0.6)
 							{
 								removeChild(pelotas[i]);
@@ -80,8 +83,7 @@ package Levels
 								addChild(newCube);
 							}
 							
-							removeChild(proyectiles[k]);
-							proyectiles.removeAt(k);
+							
 						}
 					}
 					

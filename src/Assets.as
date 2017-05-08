@@ -28,6 +28,9 @@ package
 		[Embed(source = "../media/graphics/bg_pink.jpg")]
 		public static const PinkBg:Class;
 		
+		[Embed(source = "../media/graphics/bg_3.jpg")]
+		public static const Lvl3Bg:Class;
+		
 		[Embed(source = "../media/graphics/menu_bg.jpg")]
 		public static const MenuBg:Class;
 		
