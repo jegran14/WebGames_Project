@@ -51,7 +51,9 @@ package GameObjects
 		}
 		
 		
-		override public function getRadius():Number {return (ballImage.width/2)*0.8; }
+		override public function getRadius():Number {return (ballImage.width / 2) * 0.8; }
+		public function set CubeScale (_scale:Number):void { ballImage.scale = 0.6 * _scale; }
+		public function get CubeScale ():Number	{ return ballImage.scale / 0.6; }
 		
 		override public function UpdateMovement():void
 		{
