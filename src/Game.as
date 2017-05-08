@@ -17,6 +17,7 @@ package
 		private var screenWelcome:Welcome;
 		private var level1:Level;
 		private var level2:Level2;
+		private var level3:Level3;
 
 		public function Game() 
 		{
@@ -39,6 +40,10 @@ package
 			level2 = new Level2();
 			level2.disposeTemporarily();
 			addChild(level2);
+			
+			level3 = new Level3();
+			addChild(level3);
+			level3.disposeTemporarily();
 			
 			screenWelcome = new Welcome();
 			addChild(screenWelcome);
@@ -63,6 +68,13 @@ package
 					myChannel.stop();
 					myChannel = levelSong.play(0,int.MAX_VALUE);
 					break;
+					
+				case "level3":
+				screenWelcome.disposeTemporarily();
+				level3.initialize();
+				myChannel.stop();
+				myChannel = levelSong.play(0,int.MAX_VALUE);
+				break;
 				
 				case "frmLvlToMenu":
 					var lvl:Level = e.target as Level;

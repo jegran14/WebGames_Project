@@ -104,6 +104,10 @@ package Levels
 			{
 				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "level2"}, true));
 			}
+			else if (buttonClicked == lvl3Btn)
+			{
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "level3"}, true));
+			}
 		}
 		
 		public function initialize():void 
