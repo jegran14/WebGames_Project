@@ -65,18 +65,7 @@ package Levels
 			//Cosas del nivel		
 			
 			//Rellenar array de pelotas
-			for (var i:int = 0; i < nballs; i++)
-			{
-				var initX:int = Math.random() * stage.stageWidth;
-				var initY:int = Math.random() * stage.stageHeight;
-				var angle:Number = Math.random() * 2 * Math.PI;
-				
-				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
-				
-				pelotas.push(lasPelotasDeCarlos);
-				
-				addChild(lasPelotasDeCarlos);
-			}
+			createBalls(0.6);
 			
 			//Configurar temporizador y puntuación
 			score = new Score();
@@ -106,6 +95,22 @@ package Levels
 			addChild(physics);
 			
 			shortTimer();
+		}
+		
+		protected function createBalls(scale:Number):void 
+		{
+			for (var i:int = 0; i < nballs; i++)
+			{
+				var initX:int = Math.random() * stage.stageWidth;
+				var initY:int = Math.random() * stage.stageHeight;
+				var angle:Number = Math.random() * 2 * Math.PI;
+				
+				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
+				
+				pelotas.push(lasPelotasDeCarlos);
+				
+				addChild(lasPelotasDeCarlos);
+			}
 		}
 		
 		//Control de visibilidad del nivel
