@@ -71,6 +71,7 @@ package Levels
 					if (physics.collisionWithBalls(pelotas[i], player))
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
+						player.ExecuteShield();						
 					}
 					
 					pelotas[i].UpdateMovement();

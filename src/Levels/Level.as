@@ -16,6 +16,8 @@ package Levels
 	import starling.display.Image;
 	import flash.display.Bitmap;
 	
+	
+	
 	public class Level extends Sprite
 	{	
 		protected var bg:Image;
@@ -37,6 +39,8 @@ package Levels
 		protected var state:String;
 		
 		protected var physics:Physics
+		
+	
 		
 		public function Level(_nbolas:int = 10, _bg:String = "BlueBg") 
 		{
@@ -62,7 +66,7 @@ package Levels
 			proyectiles = new Vector.<Projectile>();
 			pelotas = new Vector.<Enemies>();
 			
-			//Cosas del nivel		
+			//Cosas del nivel	
 			
 			//Rellenar array de pelotas
 			createBalls(0.6);
@@ -76,7 +80,7 @@ package Levels
 			scoreText.y = 20;
 			addChild(scoreText);
 			
-			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 35, 0x880000 , false);
+			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 35, 0xbf8f00 , false);
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
@@ -165,6 +169,7 @@ package Levels
 					{
 						state = "playing";
 						drawGame();
+						player.createShield();
 					}
 					break;
 			}
@@ -283,12 +288,15 @@ package Levels
 					if (physics.collisionWithBalls(pelotas[i], player))
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
+						player.ExecuteShield();
 					}
 					
 					pelotas[i].UpdateMovement();
 				}
 			}
 		}
+		
+
 		
 		//Final de partida
 		protected function isLevelFinished():Boolean
