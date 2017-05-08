@@ -43,6 +43,7 @@ package Levels
 			
 			lvl1Btn = new Button(Assets.getTexture("Lvl1Btn_off"));
 			lvl1Btn.overState = Assets.getTexture("Lvl1Btn_over");
+			lvl1Btn.downState = Assets.getTexture("Lvl1Btn_on");
 			lvl1Btn.x = 450;
 			lvl1Btn.y = 192;
 			lvl1Btn.addEventListener(TouchEvent.TOUCH, onTouch);
@@ -50,6 +51,7 @@ package Levels
 			
 			lvl2Btn = new Button(Assets.getTexture("Lvl2Btn_off"));
 			lvl2Btn.overState = Assets.getTexture("Lvl2Btn_over");
+			lvl2Btn.downState = Assets.getTexture("Lvl2Btn_on");
 			lvl2Btn.x = 450;
 			lvl2Btn.y = lvl1Btn.y + lvl1Btn.height + 6;
 			lvl2Btn.addEventListener(TouchEvent.TOUCH, onTouch);
@@ -57,6 +59,7 @@ package Levels
 			
 			lvl3Btn = new Button(Assets.getTexture("Lvl3Btn_off"));
 			lvl3Btn.overState = Assets.getTexture("Lvl3Btn_over");
+			lvl3Btn.downState = Assets.getTexture("Lvl3Btn_on");
 			lvl3Btn.x = 450;
 			lvl3Btn.y = lvl2Btn.y + lvl2Btn.height + 5;
 			lvl3Btn.addEventListener(TouchEvent.TOUCH, onTouch);
