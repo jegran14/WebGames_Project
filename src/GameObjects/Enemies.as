@@ -11,11 +11,13 @@ package GameObjects
 	public class Enemies extends Ball
 	{
 		private var ballImage:Image;
+		private var myScale:Number;
 		
-		public function Enemies(posX:Number, posY:Number, angle:Number) 
+		public function Enemies(posX:Number, posY:Number, angle:Number, _scale:Number = 0.6) 
 		{
 			super(posX, posY, angle, 4);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
+			myScale = _scale;
 		}
 		
 		//Event Handlers
@@ -32,8 +34,8 @@ package GameObjects
 			ballImage = new Image(Assets.getTexture("EnemyCube"));
 			
 			//Escalar
-			ballImage.scaleX = 0.6;
-			ballImage.scaleY = 0.6;
+			ballImage.scaleX = myScale;
+			ballImage.scaleY = myScale;
 			
 			//cambiar pivote
 			ballImage.alignPivot();
@@ -52,8 +54,12 @@ package GameObjects
 		
 		
 		override public function getRadius():Number {return (ballImage.width / 2) * 0.8; }
-		public function set CubeScale (_scale:Number):void { ballImage.scale = 0.6 * _scale; }
-		public function get CubeScale ():Number	{ return ballImage.scale / 0.6; }
+		public function set CubeScale (_scale:Number):void 
+		{ 
+			myScale = _scale;
+			ballImage.scale = _scale;
+		}
+		public function get CubeScale ():Number	{ return myScale; }
 		
 		override public function UpdateMovement():void
 		{
