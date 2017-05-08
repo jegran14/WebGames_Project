@@ -25,27 +25,27 @@ package Levels
 			{
 				for (var i:int = pelotas.length - 1; i >= 0 ; i--)
 				{		
-					if (testBoundaries(pelotas[i]))
+					if (physics.testBoundaries(pelotas[i]))
 					{
-						bounceWithBoundarie(pelotas[i]);
+						physics.bounceWithBoundarie(pelotas[i]);
 					}
 					
 					for (var j:int = 0; j < i; j++ )
 					{
-						if (testBoundaries(pelotas[j]))
+						if (physics.testBoundaries(pelotas[j]))
 						{
-							bounceWithBoundarie(pelotas[j]);
+							physics.bounceWithBoundarie(pelotas[j]);
 						}
 						
-						if (!pelotas[i].IsFreezed && !pelotas[j].IsFreezed && collisionWithBalls(pelotas[i], pelotas[j]))
+						if (!pelotas[i].IsFreezed && !pelotas[j].IsFreezed && physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
-							bounceBalls(pelotas[i], pelotas[j]);
+							physics.bounceBalls(pelotas[i], pelotas[j]);
 						}
 					}
 					
 					for (var k:int = proyectiles.length - 1; k >= 0; k--)
 					{
-						if (collisionWithBalls(pelotas[i], proyectiles[k]))
+						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
 							//Congelar o descongelar pelotas
 							if (pelotas[i].IsFreezed)
@@ -67,9 +67,9 @@ package Levels
 						}
 					}
 					
-					if (collisionWithBalls(pelotas[i], player))
+					if (physics.collisionWithBalls(pelotas[i], player))
 					{
-						bounceWithPlayer(pelotas[i]);
+						physics.bounceWithPlayer(pelotas[i], player);
 					}
 					
 					pelotas[i].UpdateMovement();
@@ -79,7 +79,7 @@ package Levels
 		
 		override protected function isLevelFinished():Boolean 
 		{
-			return frostCount == nball;
+			return frostCount == nballs;
 		}
 		
 		override public function disposeTemporarily():void 
