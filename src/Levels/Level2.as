@@ -2,6 +2,7 @@ package Levels
 {
 	import starling.events.Event;
 	import starling.display.Image;
+	
 	public class Level2 extends Levels.Level 
 	{
 		private var frostCount:int;
