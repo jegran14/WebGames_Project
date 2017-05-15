@@ -9,9 +9,9 @@ package Levels
 	{		
 		private var timer:Timer;
 		
-		public function Level3(_nbolas:int=3, _bg:String="BlueBg") 
+		public function Level3(_nextLvl:Level = null, _nbolas:int=3, _bg:String="BlueBg") 
 		{
-			super(_nbolas, "Lvl3Bg");
+			super(_nextLvl, _nbolas, "Lvl3Bg");
 		}
 		
 		private function startTiming():void 
@@ -37,9 +37,7 @@ package Levels
 			}
 		}
 		protected override function createBalls(scale:Number):void 
-		{
-			startTiming();
-			
+		{			
 			for (var i:int = 0; i < nballs; i++)
 			{
 				var initX:int = Math.random() * stage.stageWidth;
@@ -52,6 +50,8 @@ package Levels
 				
 				addChild(lasPelotasDeCarlos);
 			}
+			
+			startTiming();
 		}
 		
 		protected override function moveBalls():void
