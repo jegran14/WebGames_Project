@@ -28,8 +28,6 @@ package
 		
 		private function onAdded(e:Event):void 
 		{
-			
-			
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			addEventListener(NavigationEnvent.CHANGE_SCREEN, onChangeScreen);
@@ -45,6 +43,10 @@ package
 			level3 = new Level3();
 			addChild(level3);
 			level3.disposeTemporarily();
+			
+			//Asignar los niveles siguientes
+			level1.NextLvl = level2;
+			level2.NextLvl = level3;
 			
 			screenWelcome = new Welcome();
 			addChild(screenWelcome);
@@ -72,11 +74,11 @@ package
 					break;
 					
 				case "level3":
-				screenWelcome.disposeTemporarily();
-				level3.initialize();
-				myChannel.stop();
-				myChannel = levelSong.play(0,int.MAX_VALUE);
-				break;
+					screenWelcome.disposeTemporarily();
+					level3.initialize();
+					myChannel.stop();
+					myChannel = levelSong.play(0,int.MAX_VALUE);
+					break;
 				
 				case "frmLvlToMenu":
 					var lvl:Level = e.target as Level;
@@ -84,7 +86,14 @@ package
 					screenWelcome.initialize();
 					myChannel.stop();
 					myChannel = welcomeSong.play(0, int.MAX_VALUE);
-					
+					break;
+				case "frmLvlToLvl":
+					var actualLvl:Level = e.target as Level;
+					var nextLvl:Level = actualLvl.NextLvl;
+					actualLvl.disposeTemporarily();
+					nextLvl.initialize();
+					myChannel.stop();
+					myChannel = levelSong.play(0,int.MAX_VALUE);
 					break;
 			}
 		}

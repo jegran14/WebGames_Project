@@ -7,9 +7,9 @@ package Levels
 	{
 		private var frostCount:int;
 		
-		public function Level2() 
+		public function Level2(_nextLvl:Level = null) 
 		{
-			super(11,"PinkBg");
+			super(_nextLvl, 11,"PinkBg");
 			frostCount = 0;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}

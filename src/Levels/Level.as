@@ -35,21 +35,27 @@ package Levels
 		protected var finalScoreText:TextField;
 		
 		protected var menuButton:Button;
+		protected var nextButton:Button;
 		
 		protected var state:String;
 		
 		protected var physics:Physics
 		
+		protected var nextLvl:Level;
 	
 		
-		public function Level(_nbolas:int = 10, _bg:String = "BlueBg") 
+		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg") 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			//Cargar textura
 			bg = new Image(Assets.getTexture(_bg));
 			nballs = _nbolas;
+			nextLvl = _nextLvl;
 		}
+		
+		public function get NextLvl():Level	{ return nextLvl; }
+		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
 		
 		private function onAdded(e:Event):void 
 		{		
@@ -89,10 +95,24 @@ package Levels
 			menuButton = new Button(Assets.getTexture("BackBtnOff"));
 			menuButton.overState = Assets.getTexture("BackBtnOn");
 			menuButton.alignPivot();
-			menuButton.x = stage.stageWidth - 10 - menuButton.width;
+			menuButton.x = stage.stageWidth - 50 - menuButton.width;
 			menuButton.y = 10 + menuButton.height;
 			menuButton.visible = false;
 			addChild(menuButton);
+			
+			//Inicializar y ocultar boton para pasar al siguiente nivel
+			if (nextLvl != null)
+			{
+				nextButton = new Button(Assets.getTexture("BackBtnOff"));
+				nextButton.overState = Assets.getTexture("BackBtnOn");
+				nextButton.alignPivot();
+				nextButton.x = menuButton.x + menuButton.width + 10;
+				nextButton.y = 10 + nextButton.height;
+				nextButton.rotation = Math.PI;
+				nextButton.visible = false;
+				addChild(nextButton);
+			}
+			
 			
 			//Enable Physics
 			physics = new Physics();
@@ -355,11 +375,17 @@ package Levels
 			//Show button and enable the trigger ivent
 			addEventListener(Event.TRIGGERED, onButtonClick);
 			menuButton.visible = true;
+			if(nextButton != null)
+				nextButton.visible = true;
 		}	
 		
 		private function onButtonClick(e:Event):void 
 		{
-			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
+			var Btn:Button = e.target as Button;
+			if (Btn == menuButton)
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
+			else
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToLvl"}, true));
 		}
 	}
 
