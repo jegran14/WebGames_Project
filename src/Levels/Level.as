@@ -15,6 +15,7 @@ package Levels
 	import starling.textures.Texture;
 	import starling.display.Image;
 	import flash.display.Bitmap;
+	import flash.media.Sound;
 	
 	
 	
@@ -35,21 +36,32 @@ package Levels
 		protected var finalScoreText:TextField;
 		
 		protected var menuButton:Button;
+		protected var nextButton:Button;
 		
 		protected var state:String;
 		
 		protected var physics:Physics
 		
+		protected var nextLvl:Level;
+		protected var EnemyCollide:Sound = new Assets.EnemyCollide(); 
+		protected var EnemyDestroy:Sound = new Assets.EnemyDestroy(); 
+		protected var shieldCollision:Sound = new Assets.ShieldCollision(); 
 	
 		
-		public function Level(_nbolas:int = 10, _bg:String = "BlueBg") 
+		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg") 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			//Cargar textura
 			bg = new Image(Assets.getTexture(_bg));
 			nballs = _nbolas;
+			nextLvl = _nextLvl;
 		}
+		
+		public function get NextLvl():Level	{ return nextLvl; }
+		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
+		public function get LvlScore():int { return score.GetTotalScore; }
+		public function get Bg():Image { return bg;}
 		
 		private function onAdded(e:Event):void 
 		{		
@@ -89,10 +101,24 @@ package Levels
 			menuButton = new Button(Assets.getTexture("BackBtnOff"));
 			menuButton.overState = Assets.getTexture("BackBtnOn");
 			menuButton.alignPivot();
-			menuButton.x = stage.stageWidth - 10 - menuButton.width;
+			menuButton.x = stage.stageWidth - 50 - menuButton.width;
 			menuButton.y = 10 + menuButton.height;
 			menuButton.visible = false;
 			addChild(menuButton);
+			
+			//Inicializar y ocultar boton para pasar al siguiente nivel
+			if (nextLvl != null)
+			{
+				nextButton = new Button(Assets.getTexture("BackBtnOff"));
+				nextButton.overState = Assets.getTexture("BackBtnOn");
+				nextButton.alignPivot();
+				nextButton.x = menuButton.x + menuButton.width + 10;
+				nextButton.y = 10 + nextButton.height;
+				nextButton.rotation = Math.PI;
+				nextButton.visible = false;
+				addChild(nextButton);
+			}
+			
 			
 			//Enable Physics
 			physics = new Physics();
@@ -271,6 +297,7 @@ package Levels
 						if (physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
 							physics.bounceBalls(pelotas[i], pelotas[j]);
+							EnemyCollide.play();
 						}
 					}
 					
@@ -278,7 +305,9 @@ package Levels
 					{
 						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
-							removeChild(pelotas[i]);
+							pelotas[i].Destroy();
+							EnemyDestroy.play();
+							//removeChild(pelotas[i]);
 							pelotas.removeAt(i);
 							score.addScore();
 							return;
@@ -289,6 +318,7 @@ package Levels
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
 						player.ExecuteShield();
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();
@@ -324,7 +354,8 @@ package Levels
 				pelotas.removeAt(j);
 			}
 			
-			//Textos a mostrar
+			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToResults"}, true));
+			/*//Textos a mostrar
 			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana",20, 0xFFFFFF, true);
 			showLevelScoreText.alignPivot();
 			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
@@ -355,12 +386,18 @@ package Levels
 			//Show button and enable the trigger ivent
 			addEventListener(Event.TRIGGERED, onButtonClick);
 			menuButton.visible = true;
+			if(nextButton != null)
+				nextButton.visible = true;*/
 		}	
 		
-		private function onButtonClick(e:Event):void 
+		/*private function onButtonClick(e:Event):void 
 		{
-			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
-		}
+			var Btn:Button = e.target as Button;
+			if (Btn == menuButton)
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
+			else
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToLvl"}, true));
+		}*/
 	}
 
 }

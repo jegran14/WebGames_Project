@@ -81,7 +81,22 @@ package
 		
 		[Embed(source="../media/sounds/laserGun.mp3")]
 		public static const LaserGun:Class;
+		
+		[Embed(source="../media/sounds/EnemyCollide.mp3")]
+		public static const EnemyCollide:Class;
 
+		[Embed(source="../media/sounds/EnemyDestroy.mp3")]
+		public static const EnemyDestroy:Class;
+		
+		[Embed(source="../media/sounds/EnemyFreeze.mp3")]
+		public static const EnemyFreeze:Class;
+		
+		[Embed(source="../media/sounds/EnemyUnfreezed.mp3")]
+		public static const EnemyUnfreeze:Class;
+		
+		[Embed(source="../media/sounds/ShieldImpact.mp3")]
+		public static const ShieldCollision:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
 		
 		public static function getTexture(name:String):Texture
