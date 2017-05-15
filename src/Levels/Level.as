@@ -15,6 +15,7 @@ package Levels
 	import starling.textures.Texture;
 	import starling.display.Image;
 	import flash.display.Bitmap;
+	import flash.media.Sound;
 	
 	
 	
@@ -42,6 +43,8 @@ package Levels
 		protected var physics:Physics
 		
 		protected var nextLvl:Level;
+		protected var EnemyCollide:Sound = new Assets.EnemyCollide(); 
+		protected var EnemyDestroy:Sound = new Assets.EnemyDestroy(); 
 	
 		
 		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg") 
@@ -56,6 +59,7 @@ package Levels
 		
 		public function get NextLvl():Level	{ return nextLvl; }
 		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
+		
 		
 		private function onAdded(e:Event):void 
 		{		
@@ -291,6 +295,7 @@ package Levels
 						if (physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
 							physics.bounceBalls(pelotas[i], pelotas[j]);
+							EnemyCollide.play();
 						}
 					}
 					
@@ -299,6 +304,7 @@ package Levels
 						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
 							pelotas[i].Destroy();
+							EnemyDestroy.play();
 							//removeChild(pelotas[i]);
 							pelotas.removeAt(i);
 							score.addScore();

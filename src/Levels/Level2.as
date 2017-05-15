@@ -1,11 +1,13 @@
 package Levels 
 {
+	import flash.media.Sound;
 	import starling.events.Event;
 	import starling.display.Image;
 	
 	public class Level2 extends Levels.Level 
 	{
 		private var frostCount:int;
+		private var EnemyFreeze:Sound = new Assets.EnemyFreeze();
 		
 		public function Level2(_nextLvl:Level = null) 
 		{
@@ -58,6 +60,7 @@ package Levels
 							else
 							{
 								pelotas[i].freeze();
+								EnemyFreeze.play();
 								frostCount++;
 								score.addScore();
 							}
