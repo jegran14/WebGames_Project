@@ -1,5 +1,6 @@
 package GameObjects 
 {
+	import com.adobe.tvsdk.mediacore.AdPolicySelectorType;
 	import com.friendsofed.vector.*;
 	import flash.display.Bitmap;
 	import flash.geom.Point;
@@ -7,6 +8,7 @@ package GameObjects
 	import starling.display.Sprite;
 	import starling.events.*;
 	import starling.textures.Texture;
+	import com.greensock.TweenLite
 	
 	public class Enemies extends Ball
 	{
@@ -43,6 +45,8 @@ package GameObjects
 			//Colocar en las coordenadas
 			ballImage.x = _posActual.x;
 			ballImage.y = _posActual.y;
+			
+			
 			
 			//rotation
 			var direction:VectorModel = new VectorModel(_posActual.x, _posActual.y, _posAnterior.x, _posAnterior.y)
@@ -96,6 +100,17 @@ package GameObjects
 			var alpha:Number = Math.random() * 2 * Math.PI;
 			Vx = Speed * Math.cos(alpha);
 			Vy = Speed * Math.sin(alpha);
+		}
+		
+		public function Destroy():void
+		{
+			TweenLite.to(ballImage, 0.2, {scale:1.5,color:0x000000, onComplete:finishDestroying});
+		}
+		
+		private function finishDestroying():void 
+		{
+			TweenLite.to(ballImage, 0.2, {scale:0, alpha:0})
+			stage.removeChild(this);
 		}
 	}
 

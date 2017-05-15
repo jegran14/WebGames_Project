@@ -93,7 +93,7 @@ package Levels
 							
 							if (pelotas[i].CubeScale <= 0.7)
 							{
-								removeChild(pelotas[i]);
+								pelotas[i].Destroy();
 								pelotas.removeAt(i);
 								score.addScore();
 								return;

@@ -11,6 +11,7 @@ package
 	{
 		
 		private var levelSong:Sound = new Sound(new URLRequest("../media/sounds/levelSong.mp3")); // make sure you use the proper path!
+		private var level2Song:Sound = new Sound (new URLRequest("../media/sounds/Level2Song.mp3"));
 		private var welcomeSong:Sound = new Sound (new URLRequest("../media/sounds/WelcomeSong.mp3"));
 		private var myChannel:SoundChannel = new SoundChannel();
 		
@@ -63,21 +64,21 @@ package
 					screenWelcome.disposeTemporarily();
 					level1.initialize();
 					myChannel.stop();
-					myChannel = levelSong.play(0, int.MAX_VALUE);
+					myChannel = level2Song.play(0, int.MAX_VALUE);
 					break;
 				
 				case "level2":
 					screenWelcome.disposeTemporarily();
 					level2.initialize();
 					myChannel.stop();
-					myChannel = levelSong.play(0,int.MAX_VALUE);
+					myChannel = level2Song.play(0,int.MAX_VALUE);
 					break;
 					
 				case "level3":
 					screenWelcome.disposeTemporarily();
 					level3.initialize();
 					myChannel.stop();
-					myChannel = levelSong.play(0,int.MAX_VALUE);
+					myChannel = level2Song.play(0,int.MAX_VALUE);
 					break;
 				
 				case "frmLvlToMenu":
@@ -93,7 +94,7 @@ package
 					actualLvl.disposeTemporarily();
 					nextLvl.initialize();
 					myChannel.stop();
-					myChannel = levelSong.play(0,int.MAX_VALUE);
+					myChannel = level2Song.play(0,int.MAX_VALUE);
 					break;
 			}
 		}

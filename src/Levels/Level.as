@@ -298,7 +298,8 @@ package Levels
 					{
 						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
-							removeChild(pelotas[i]);
+							pelotas[i].Destroy();
+							//removeChild(pelotas[i]);
 							pelotas.removeAt(i);
 							score.addScore();
 							return;
