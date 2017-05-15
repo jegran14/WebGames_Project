@@ -45,6 +45,7 @@ package Levels
 		protected var nextLvl:Level;
 		protected var EnemyCollide:Sound = new Assets.EnemyCollide(); 
 		protected var EnemyDestroy:Sound = new Assets.EnemyDestroy(); 
+		protected var shieldCollision:Sound = new Assets.ShieldCollision(); 
 	
 		
 		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg") 
@@ -59,7 +60,8 @@ package Levels
 		
 		public function get NextLvl():Level	{ return nextLvl; }
 		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
-		
+		public function get LvlScore():int { return score.GetTotalScore; }
+		public function get Bg():Image { return bg;}
 		
 		private function onAdded(e:Event):void 
 		{		
@@ -316,6 +318,7 @@ package Levels
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
 						player.ExecuteShield();
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();
@@ -351,7 +354,8 @@ package Levels
 				pelotas.removeAt(j);
 			}
 			
-			//Textos a mostrar
+			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToResults"}, true));
+			/*//Textos a mostrar
 			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana",20, 0xFFFFFF, true);
 			showLevelScoreText.alignPivot();
 			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
@@ -383,17 +387,17 @@ package Levels
 			addEventListener(Event.TRIGGERED, onButtonClick);
 			menuButton.visible = true;
 			if(nextButton != null)
-				nextButton.visible = true;
+				nextButton.visible = true;*/
 		}	
 		
-		private function onButtonClick(e:Event):void 
+		/*private function onButtonClick(e:Event):void 
 		{
 			var Btn:Button = e.target as Button;
 			if (Btn == menuButton)
 				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
 			else
 				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToLvl"}, true));
-		}
+		}*/
 	}
 
 }

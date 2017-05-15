@@ -123,6 +123,7 @@ package Levels
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
 						player.ExecuteShield();	
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();

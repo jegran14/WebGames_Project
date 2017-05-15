@@ -1,6 +1,7 @@
 package 
 {
 	import events.NavigationEnvent;
+	import flash.events.Event;
 	import flash.net.URLRequest;
 	import starling.display.Sprite;
 	import starling.events.*;
@@ -9,10 +10,12 @@ package
 	
 	public class Game extends Sprite 
 	{
+		private var totalScore:int;
 		
 		private var levelSong:Sound = new Sound(new URLRequest("../media/sounds/levelSong.mp3")); // make sure you use the proper path!
 		private var level2Song:Sound = new Sound (new URLRequest("../media/sounds/Level2Song.mp3"));
 		private var welcomeSong:Sound = new Sound (new URLRequest("../media/sounds/WelcomeSong.mp3"));
+		private var endingStart:Sound = new Sound (new URLRequest("../media/sounds/LevelEnding.mp3"));
 		private var myChannel:SoundChannel = new SoundChannel();
 		
 		
@@ -20,18 +23,21 @@ package
 		private var level1:Level;
 		private var level2:Level2;
 		private var level3:Level3;
+		private var results:ResultsScreen;
 
 		public function Game() 
 		{
 			super();
-			addEventListener(Event.ADDED_TO_STAGE, onAdded);
+			addEventListener(starling.events.Event.ADDED_TO_STAGE, onAdded);
 		}
 		
-		private function onAdded(e:Event):void 
+		private function onAdded(e:starling.events.Event):void 
 		{
-			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
+			removeEventListener(starling.events.Event.ADDED_TO_STAGE, onAdded);
 			
 			addEventListener(NavigationEnvent.CHANGE_SCREEN, onChangeScreen);
+			
+			totalScore = 0;
 			
 			level1 = new Level();
 			level1.disposeTemporarily();
@@ -44,6 +50,10 @@ package
 			level3 = new Level3();
 			addChild(level3);
 			level3.disposeTemporarily();
+			
+			results = new ResultsScreen();
+			addChild(results);
+			results.DisposeTemporarily();
 			
 			//Asignar los niveles siguientes
 			level1.NextLvl = level2;
@@ -63,40 +73,60 @@ package
 				case "level1":
 					screenWelcome.disposeTemporarily();
 					level1.initialize();
-					myChannel.stop();
-					myChannel = level2Song.play(0, int.MAX_VALUE);
+					playScreenMusic();
 					break;
 				
 				case "level2":
 					screenWelcome.disposeTemporarily();
 					level2.initialize();
-					myChannel.stop();
-					myChannel = level2Song.play(0,int.MAX_VALUE);
+					playScreenMusic();
 					break;
 					
 				case "level3":
 					screenWelcome.disposeTemporarily();
 					level3.initialize();
-					myChannel.stop();
-					myChannel = level2Song.play(0,int.MAX_VALUE);
+					playScreenMusic();
 					break;
 				
 				case "frmLvlToMenu":
 					var lvl:Level = e.target as Level;
 					lvl.disposeTemporarily();
 					screenWelcome.initialize();
-					myChannel.stop();
-					myChannel = welcomeSong.play(0, int.MAX_VALUE);
+					playMenuMusic();
 					break;
 				case "frmLvlToLvl":
-					var actualLvl:Level = e.target as Level;
-					var nextLvl:Level = actualLvl.NextLvl;
-					actualLvl.disposeTemporarily();
+					var nextLvl:Level = results.NextLvl;
+					results.DisposeTemporarily();
 					nextLvl.initialize();
-					myChannel.stop();
-					myChannel = level2Song.play(0,int.MAX_VALUE);
+					break;
+				case "frmLvlToResults":
+					var Lvl:Level = e.target as Level
+					var nexLvl:Level = Lvl.NextLvl;
+					totalScore += Lvl.LvlScore;
+					Lvl.disposeTemporarily();
+					results.initialize(Lvl.LvlScore, totalScore, nexLvl, Lvl.Bg);
+					playEndingSound();
 					break;
 			}
+		}
+		
+		private function playMenuMusic():void 
+		{			
+			myChannel.stop();
+			myChannel = welcomeSong.play(0, int.MAX_VALUE);
+		}
+		
+		private function playScreenMusic():void 
+		{
+			myChannel.stop();
+			myChannel = level2Song.play(0,int.MAX_VALUE);
+		}
+
+		private function playEndingSound():void 
+		{
+			myChannel.stop();
+			myChannel = endingStart.play();
+			playScreenMusic();
 		}
 		
 	}

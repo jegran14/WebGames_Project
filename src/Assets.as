@@ -91,6 +91,12 @@ package
 		[Embed(source="../media/sounds/EnemyFreeze.mp3")]
 		public static const EnemyFreeze:Class;
 		
+		[Embed(source="../media/sounds/EnemyUnfreezed.mp3")]
+		public static const EnemyUnfreeze:Class;
+		
+		[Embed(source="../media/sounds/ShieldImpact.mp3")]
+		public static const ShieldCollision:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
 		
 		public static function getTexture(name:String):Texture

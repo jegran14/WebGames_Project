@@ -7,7 +7,8 @@ package Levels
 	public class Level2 extends Levels.Level 
 	{
 		private var frostCount:int;
-		private var EnemyFreeze:Sound = new Assets.EnemyFreeze();
+		private var enemyFreeze:Sound = new Assets.EnemyFreeze();
+		private var enemyUnfreeze:Sound = new Assets.EnemyUnfreeze();
 		
 		public function Level2(_nextLvl:Level = null) 
 		{
@@ -43,6 +44,7 @@ package Levels
 						if (!pelotas[i].IsFreezed && !pelotas[j].IsFreezed && physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
 							physics.bounceBalls(pelotas[i], pelotas[j]);
+							EnemyCollide.play();
 						}
 					}
 					
@@ -54,13 +56,14 @@ package Levels
 							if (pelotas[i].IsFreezed)
 							{
 								pelotas[i].unfreeze();
+								enemyUnfreeze.play();
 								frostCount--;
 								score.substractScore();
 							}
 							else
 							{
 								pelotas[i].freeze();
-								EnemyFreeze.play();
+								enemyFreeze.play();
 								frostCount++;
 								score.addScore();
 							}
@@ -74,7 +77,8 @@ package Levels
 					if (physics.collisionWithBalls(pelotas[i], player))
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
-						player.ExecuteShield();						
+						player.ExecuteShield();	
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();
