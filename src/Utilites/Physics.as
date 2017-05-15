@@ -76,7 +76,7 @@ package Utilites
 			var dp1:Number = VectorMath.dotProduct(v3, v2);
 			var dp2:Number = VectorMath.dotProduct(v3, v2.ln);
 			
-			if (dp1 > -v2.m && dp1 < 0)
+			if (dp1 >= -v2.m && dp1 <= 0)
 			{				
 				if (dp2 <= 0)
 				{

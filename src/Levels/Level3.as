@@ -2,18 +2,44 @@ package Levels
 {
 	import GameObjects.*;
 	import com.friendsofed.vector.VectorModel;
+	import flash.events.TimerEvent;
+	import flash.utils.Timer;
 	
 	public class Level3 extends Level 
-	{
+	{		
+		private var timer:Timer;
 		
-		public function Level3(_nbolas:int=1, _bg:String="BlueBg") 
+		public function Level3(_nbolas:int=3, _bg:String="BlueBg") 
 		{
 			super(_nbolas, "Lvl3Bg");
-			
 		}
 		
+		private function startTiming():void 
+		{
+			timer = new Timer (5000,0);
+			timer.start();
+			timer.addEventListener(TimerEvent.TIMER, onSec);
+		}
+		
+		private function onSec(e:TimerEvent):void 
+		{
+			if (pelotas.length > 0 && pelotas.length <= 7)
+			{
+				var i:int = Math.random() * (pelotas.length - 1);
+				
+				//Crear y reescalar la nueva bola
+				var newCube:Enemies = new Enemies(pelotas[i].PosX, pelotas[i].PosY, 0, pelotas[i].CubeScale)
+				newCube.Vx = -pelotas[i].Vx;
+				newCube.Vy = pelotas[i].Vy;
+				newCube.IsFreezed = true;
+				pelotas.push(newCube);
+				addChild(newCube);
+			}
+		}
 		protected override function createBalls(scale:Number):void 
 		{
+			startTiming();
+			
 			for (var i:int = 0; i < nballs; i++)
 			{
 				var initX:int = Math.random() * stage.stageWidth;
@@ -39,6 +65,8 @@ package Levels
 						physics.bounceWithBoundarie(pelotas[i]);
 					}
 					
+					var inCollission:Boolean = pelotas[i].IsFreezed;
+					
 					for (var j:int = 0; j < i; j++ )
 					{
 						if (physics.testBoundaries(pelotas[j]))
@@ -48,9 +76,13 @@ package Levels
 						
 						if (physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
-							physics.bounceBalls(pelotas[i], pelotas[j]);
+							if(!pelotas[i].IsFreezed && !pelotas[j].IsFreezed)
+								physics.bounceBalls(pelotas[i], pelotas[j]);
 						}
+						else if (inCollission) inCollission = false;
 					}
+					
+					pelotas[i].IsFreezed = inCollission;
 					
 					for (var k:int = proyectiles.length - 1; k >= 0; k--)
 					{
@@ -67,20 +99,16 @@ package Levels
 								return;
 							}
 							else
-							{		
-								//Antigua dirección de la bola
-								var dir:VectorModel = new VectorModel(0, 0, 0, 0, pelotas[i].Vx, pelotas[i].Vy)
-								
-								//Reescalar y cambiar dirección de la bola
+							{								
+								//Reescalar la bola
 								pelotas[i].CubeScale -= 0.2;
-								pelotas[i].Vx *= Math.cos(dir.angle + Math.PI / 2);
-								pelotas[i].Vy *= Math.sin(dir.angle + Math.PI / 2);
 								
 								
 								//Crear y reescalar la nueva bola
-								var newCube:Enemies = new Enemies(pelotas[i].PosX, pelotas[i].PosY, dir.angle, pelotas[i].CubeScale)
-								newCube.Vx = pelotas[i].Vx * Math.cos(dir.angle - Math.PI / 2);
-								newCube.Vy = pelotas[i].Vy * Math.sin(dir.angle - Math.PI / 2);
+								var newCube:Enemies = new Enemies(pelotas[i].PosX, pelotas[i].PosY, 0, pelotas[i].CubeScale)
+								newCube.Vx = -pelotas[i].Vx;
+								newCube.Vy = pelotas[i].Vy;
+								newCube.IsFreezed = true;
 								pelotas.push(newCube);
 								addChild(newCube);
 							}
@@ -97,7 +125,18 @@ package Levels
 					
 					pelotas[i].UpdateMovement();
 				}
+				trace(pelotas.length);
 			}
+		}
+		
+		override protected function isLevelFinished():Boolean 
+		{
+			if (pelotas.length == 0)
+			{
+				removeEventListener(TimerEvent.TIMER, onSec);
+				return true;
+			}
+			return false;
 		}
 	}
 
