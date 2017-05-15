@@ -46,13 +46,13 @@ package Levels
 			bg = _bg;
 			addChild(bg);
 			
-			scoreText = new TextField (0 + stage.stageWidth / 4, stage.stageHeight / 2, "Score = " + lvlScore, "MyFont", 35, 0xFFFFFF , false);
+			scoreText = new TextField (0 + stage.stageWidth / 4, stage.stageHeight / 2, "" + lvlScore, "MyFont", 35, 0xFFFFFF , false);
 			scoreText.alignPivot();
 			scoreText.x = 0 + stage.stageWidth / 4;
 			scoreText.y =  stage.stageHeight / 2;
 			addChild(scoreText);
 			
-			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = " + totalScore, "MyFont", 35, 0xbf8f00 , false);
+			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "" + totalScore, "MyFont", 35, 0xbf8f00 , false);
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
@@ -114,9 +114,9 @@ package Levels
 		{
 			var Btn:Button = e.target as Button;
 			if (Btn == menuButton)
-				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmResultsToMenu"}, true)); 
 			else
-				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToLvl"}, true));
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmResultsToLvl"}, true));
 		}
 		
 	}

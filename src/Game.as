@@ -1,7 +1,6 @@
 package 
 {
 	import events.NavigationEnvent;
-	import flash.events.Event;
 	import flash.net.URLRequest;
 	import starling.display.Sprite;
 	import starling.events.*;
@@ -28,12 +27,12 @@ package
 		public function Game() 
 		{
 			super();
-			addEventListener(starling.events.Event.ADDED_TO_STAGE, onAdded);
+			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 		
-		private function onAdded(e:starling.events.Event):void 
+		private function onAdded(e:Event):void 
 		{
-			removeEventListener(starling.events.Event.ADDED_TO_STAGE, onAdded);
+			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			addEventListener(NavigationEnvent.CHANGE_SCREEN, onChangeScreen);
 			
@@ -88,13 +87,12 @@ package
 					playScreenMusic();
 					break;
 				
-				case "frmLvlToMenu":
-					var lvl:Level = e.target as Level;
-					lvl.disposeTemporarily();
+				case "frmResultsToMenu":
+					results.DisposeTemporarily();
 					screenWelcome.initialize();
 					playMenuMusic();
 					break;
-				case "frmLvlToLvl":
+				case "frmResultsToLvl":
 					var nextLvl:Level = results.NextLvl;
 					results.DisposeTemporarily();
 					nextLvl.initialize();
@@ -105,13 +103,13 @@ package
 					totalScore += Lvl.LvlScore;
 					Lvl.disposeTemporarily();
 					results.initialize(Lvl.LvlScore, totalScore, nexLvl, Lvl.Bg);
-					playEndingSound();
+					playEndSound();
 					break;
 			}
 		}
 		
 		private function playMenuMusic():void 
-		{			
+		{
 			myChannel.stop();
 			myChannel = welcomeSong.play(0, int.MAX_VALUE);
 		}
@@ -122,11 +120,10 @@ package
 			myChannel = level2Song.play(0,int.MAX_VALUE);
 		}
 
-		private function playEndingSound():void 
+		private function playEndSound():void 
 		{
-			myChannel.stop();
+			myChannel.stop()
 			myChannel = endingStart.play();
-			playScreenMusic();
 		}
 		
 	}
