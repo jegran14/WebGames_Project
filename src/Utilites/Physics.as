@@ -22,9 +22,36 @@ package Utilites
 			v3 = new VectorModel();	
 		}
 		
+		//Comprobar que la bola esté dentro de 
+		private function inStage(b:Ball):void 
+		{
+			if (b.PosX < 0 || b.PosX > stage.stageWidth)
+			{
+				var side:Number = b.PosX - stage.stageWidth
+				
+				if (side > 0)
+					b.SetX = stage.stageWidth;
+				else
+					b.SetX = 0;
+			}
+			
+			if (b.PosY < 0 || b.PosY > stage.stageHeight)
+			{
+				var sideY:Number = b.PosY - stage.stageHeight;
+				
+				if (sideY > 0)
+					b.SetY = stage.stageHeight;
+				else
+					b.SetY = 0;
+			}
+		}
+		
+		
 		//Seleccionar con que lateral se va a comprobar la colisión
 		public function testBoundaries(b:Ball):Boolean
 		{	
+			inStage(b);
+			
 			//Comprobar dirección en el eje X para decidir con que pared comprobamos la colisión
 			if (b.Vx < 0)
 			{
