@@ -17,7 +17,9 @@ package GameObjects
 		private var by:Number;
 		private var bulletRad:Number;
 		private var laserGun:Sound = new Assets.LaserGun(); 
+		
 		private var shield:Image;
+		
 		
 		public function Cannon(posX:Number, posY:Number) 
 		{

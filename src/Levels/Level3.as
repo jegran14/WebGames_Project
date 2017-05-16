@@ -78,6 +78,7 @@ package Levels
 						{
 							if(!pelotas[i].IsFreezed && !pelotas[j].IsFreezed)
 								physics.bounceBalls(pelotas[i], pelotas[j]);
+								EnemyCollide.play();
 						}
 						else if (inCollission) inCollission = false;
 					}
@@ -93,7 +94,8 @@ package Levels
 							
 							if (pelotas[i].CubeScale <= 0.7)
 							{
-								removeChild(pelotas[i]);
+								pelotas[i].Destroy();
+								EnemyDestroy.play();
 								pelotas.removeAt(i);
 								score.addScore();
 								return;
@@ -121,6 +123,7 @@ package Levels
 					{
 						physics.bounceWithPlayer(pelotas[i], player);
 						player.ExecuteShield();	
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();
