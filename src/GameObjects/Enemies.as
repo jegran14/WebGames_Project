@@ -9,6 +9,7 @@ package GameObjects
 	import starling.events.*;
 	import starling.textures.Texture;
 	import com.greensock.TweenLite
+	import events.DestroyBallEvent;
 	
 	public class Enemies extends Ball
 	{
@@ -104,13 +105,17 @@ package GameObjects
 		
 		public function Destroy():void
 		{
-			TweenLite.to(ballImage, 0.2, {scale:1.5,color:0x000000, onComplete:finishDestroying});
+			TweenLite.to(ballImage, 0.2, {scale:1.5,color:0x000000, onComplete:continueDestroying});
 		}
 		
-		private function finishDestroying():void 
+		private function continueDestroying():void 
 		{
-			TweenLite.to(ballImage, 0.2, {scale:0, alpha:0})
-			stage.removeChild(this);
+			TweenLite.to(ballImage, 0.2, {scale:0, alpha:0, onComplete:endDestroying})
+		}
+		
+		private function endDestroying():void 
+		{
+			dispatchEvent(new DestroyBallEvent(DestroyBallEvent.DESTROYBALL, true));
 		}
 	}
 

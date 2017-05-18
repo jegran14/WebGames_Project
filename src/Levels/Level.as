@@ -4,7 +4,7 @@ package Levels
 	import Utilites.*;
 	import com.friendsofed.vector.*;
 	import com.friendsofed.utils.TextBox;
-	import events.NavigationEnvent;
+	import events.*;
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	import starling.display.Button;
@@ -73,6 +73,7 @@ package Levels
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
+			addEventListener(DestroyBallEvent.DESTROYBALL, onDestroy);
 			
 			//Inicializar vector
 			proyectiles = new Vector.<Projectile>();
@@ -125,6 +126,13 @@ package Levels
 			addChild(physics);
 			
 			shortTimer();
+		}
+		
+		private function onDestroy(e:DestroyBallEvent):void 
+		{
+			var ball:Ball = e.target as Ball;
+			
+			removeChild(ball);
 		}
 		
 		protected function createBalls(scale:Number):void 
