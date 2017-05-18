@@ -30,9 +30,9 @@ package Utilites
 				var side:Number = b.PosX - stage.stageWidth
 				
 				if (side > 0)
-					b.SetX = stage.stageWidth;
+					b.SetX = stage.stageWidth - 0.1;
 				else
-					b.SetX = 0;
+					b.SetX = 0 + 0.1;
 			}
 			
 			if (b.PosY < 0 || b.PosY > stage.stageHeight)
@@ -40,9 +40,9 @@ package Utilites
 				var sideY:Number = b.PosY - stage.stageHeight;
 				
 				if (sideY > 0)
-					b.SetY = stage.stageHeight;
+					b.SetY = stage.stageHeight - 0.1;
 				else
-					b.SetY = 0;
+					b.SetY = 0 + 0.1;
 			}
 		}
 		
