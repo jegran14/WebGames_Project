@@ -34,6 +34,7 @@ package Levels
 		protected var score:Score;
 		protected var minuteTimer:Timer;
 		protected var finalScoreText:TextField;
+		protected var scoreNumber:TextField;
 		
 		protected var menuButton:Button;
 		protected var nextButton:Button;
@@ -87,11 +88,17 @@ package Levels
 			//Configurar temporizador y puntuación
 			score = new Score();
 			
-			scoreText = new TextField (300, 100, "Score = 5000", "MyFont", 30, 0xFFFFFF , false);
+			scoreText = new TextField (300, 100, "Score = ", "MyFont", 30, 0xFFFFFF , false);
 			scoreText.alignPivot();
-			scoreText.x = 100;
+			scoreText.x = 75;
 			scoreText.y = 20;
 			addChild(scoreText);
+			
+			scoreNumber = new TextField (300, 100, "5000 ", "MyFont", 30, 0xFFFFFF , false);
+			scoreNumber.alignPivot();
+			scoreNumber.x =  scoreNumber.width/2 ;
+			scoreNumber.y = 20;
+			addChild(scoreNumber);
 			
 			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 35, 0xbf8f00 , false);
 			finalScoreText.alignPivot();
@@ -240,7 +247,7 @@ package Levels
 		private function ontick(e:TimerEvent):void 
 		{
 			score.updateScore(score);
-			scoreText.text = "Score = " + score.GetScore;
+			scoreNumber.text = "" + score.GetScore;
 		}
 		
 		//Crear un nuevo proyectil cuando se dispare, y ejecutar la animación del jugador
@@ -249,10 +256,12 @@ package Levels
 		{
 			player.Shoot();
 			
-			var direction:VectorModel = new VectorModel(player.PosX, player.PosY, mPosx, mPosY);
+		
 			
 			var bulletX:Number = player.bulletStartX;
 			var bulletY:Number = player.bulletStartY;
+			
+			var direction:VectorModel = new VectorModel(bulletX, bulletY, mPosx, mPosY);
 			
 			var proyectil:Projectile = new Projectile(bulletX, bulletY, direction.angle);
 			
