@@ -44,7 +44,7 @@ package Levels
 				var initY:int = Math.random() * stage.stageHeight;
 				var angle:Number = Math.random() * 2 * Math.PI;
 				
-				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle, 1);
+				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle, 0.6);
 				
 				pelotas.push(lasPelotasDeCarlos);
 				
@@ -92,7 +92,7 @@ package Levels
 							removeChild(proyectiles[k]);
 							proyectiles.removeAt(k);
 							
-							if (pelotas[i].CubeScale <= 0.7)
+							if (pelotas[i].CubeScale <= 0.3)
 							{
 								pelotas[i].Destroy();
 								EnemyDestroy.play();

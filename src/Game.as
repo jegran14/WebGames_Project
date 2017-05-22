@@ -94,6 +94,7 @@ package
 					break;
 				case "frmResultsToLvl":
 					var nextLvl:Level = results.NextLvl;
+					playScreenMusic();
 					results.DisposeTemporarily();
 					nextLvl.initialize();
 					break;

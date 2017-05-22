@@ -7,7 +7,7 @@ package
 	
 	public class Assets 
 	{
-		[Embed(source = "../media/graphics/cube.png")]
+		[Embed(source = "../media/graphics/CubeWhite.png")]
 		public static const EnemyCube:Class;
 		
 		[Embed(source = "../media/graphics/laser.png")]
