@@ -128,7 +128,6 @@ package Levels
 					
 					pelotas[i].UpdateMovement();
 				}
-				trace(pelotas.length);
 			}
 		}
 		
