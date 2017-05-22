@@ -256,10 +256,12 @@ package Levels
 		{
 			player.Shoot();
 			
-			var direction:VectorModel = new VectorModel(player.PosX, player.PosY, mPosx, mPosY);
+		
 			
 			var bulletX:Number = player.bulletStartX;
 			var bulletY:Number = player.bulletStartY;
+			
+			var direction:VectorModel = new VectorModel(bulletX, bulletY, mPosx, mPosY);
 			
 			var proyectil:Projectile = new Projectile(bulletX, bulletY, direction.angle);
 			
