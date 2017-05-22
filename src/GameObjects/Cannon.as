@@ -27,8 +27,8 @@ package GameObjects
 		    addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
 			
-		public function get bulletStartX():Number{ return PosX + 40*Math.cos(cannon.rotation+30); }
-		public function get bulletStartY():Number{ return PosY + 40*Math.sin(cannon.rotation+30); }
+		public function get bulletStartX():Number{ return PosX + 35*Math.cos(cannon.rotation+30); }
+		public function get bulletStartY():Number{ return PosY + 35*Math.sin(cannon.rotation+30); }
 		
 		//Event Handlers
 		private function onAdded(e:Event):void 

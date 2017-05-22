@@ -12,7 +12,7 @@ package Levels
 		
 		public function Level2(_nextLvl:Level = null) 
 		{
-			super(_nextLvl, 11,"PinkBg");
+			super(_nextLvl, 11,"PinkBg",0x8efe91);
 			frostCount = 0;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
