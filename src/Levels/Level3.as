@@ -9,9 +9,9 @@ package Levels
 	{		
 		private var timer:Timer;
 		
-		public function Level3(_nextLvl:Level = null, _nbolas:int=3, _bg:String="BlueBg") 
+		public function Level3(_nextLvl:Level = null, _nbolas:int=3, _bg:String="BlueBg", _cubeColor:Number = 0x00fcff) 
 		{
-			super(_nextLvl, _nbolas, "Lvl3Bg");
+			super(_nextLvl, _nbolas, "Lvl3Bg",0xff70ff);
 		}
 		
 		private function startTiming():void 
@@ -34,6 +34,7 @@ package Levels
 				newCube.IsFreezed = true;
 				pelotas.push(newCube);
 				addChild(newCube);
+				newCube.CubeColor = pelotas[i].CubeColor;
 			}
 		}
 		protected override function createBalls(scale:Number):void 
@@ -44,11 +45,13 @@ package Levels
 				var initY:int = Math.random() * stage.stageHeight;
 				var angle:Number = Math.random() * 2 * Math.PI;
 				
-				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle, 0.6);
+				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle, 0.5);
 				
 				pelotas.push(lasPelotasDeCarlos);
 				
 				addChild(lasPelotasDeCarlos);
+				lasPelotasDeCarlos.CubeColor = cubeColor;
+				
 			}
 			
 			startTiming();
@@ -103,7 +106,8 @@ package Levels
 							else
 							{								
 								//Reescalar la bola
-								pelotas[i].CubeScale -= 0.2;
+								pelotas[i].CubeScale -= 0.15;
+								pelotas[i].CubeColor =  pelotas[i].CubeColor - 0x77772;
 								
 								
 								//Crear y reescalar la nueva bola
@@ -113,6 +117,7 @@ package Levels
 								newCube.IsFreezed = true;
 								pelotas.push(newCube);
 								addChild(newCube);
+								newCube.CubeColor = pelotas[i].CubeColor;
 							}
 							
 							

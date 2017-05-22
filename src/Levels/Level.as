@@ -29,6 +29,7 @@ package Levels
 		protected var pelotas:Vector.<Enemies>;
 		
 		protected var nballs:int;
+		protected var cubeColor:Number;
 		
 		protected var scoreText:TextField;
 		protected var score:Score;
@@ -49,7 +50,7 @@ package Levels
 		protected var shieldCollision:Sound = new Assets.ShieldCollision(); 
 	
 		
-		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg") 
+		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg", _cubeColor:Number = 0x00fcff) 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
@@ -57,7 +58,10 @@ package Levels
 			bg = new Image(Assets.getTexture(_bg));
 			nballs = _nbolas;
 			nextLvl = _nextLvl;
+			cubeColor = _cubeColor;
+			
 		}
+		
 		
 		public function get NextLvl():Level	{ return nextLvl; }
 		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
@@ -152,9 +156,12 @@ package Levels
 				
 				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
 				
+				
 				pelotas.push(lasPelotasDeCarlos);
 				
 				addChild(lasPelotasDeCarlos);
+				
+				lasPelotasDeCarlos.CubeColor = cubeColor;
 			}
 		}
 		
@@ -256,12 +263,12 @@ package Levels
 		{
 			player.Shoot();
 			
-		
+			var direction:VectorModel = new VectorModel(player.PosX, player.PosY, mPosx, mPosY);
 			
 			var bulletX:Number = player.bulletStartX;
 			var bulletY:Number = player.bulletStartY;
 			
-			var direction:VectorModel = new VectorModel(bulletX, bulletY, mPosx, mPosY);
+			
 			
 			var proyectil:Projectile = new Projectile(bulletX, bulletY, direction.angle);
 			
