@@ -16,7 +16,7 @@ package GameObjects
 		private var ballImage:Image;
 		private var myScale:Number;
 		
-		public function Enemies(posX:Number, posY:Number, angle:Number, _scale:Number = 0.6) 
+		public function Enemies(posX:Number, posY:Number, angle:Number, _scale:Number = 0.2) 
 		{
 			super(posX, posY, angle, 4);
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
