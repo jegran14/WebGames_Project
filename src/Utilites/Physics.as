@@ -180,6 +180,7 @@ package Utilites
 			var p2a:VectorModel = VectorMath.project(v2, v0);
 			var p2b:VectorModel = VectorMath.project(v2, v0.ln);
 			
+			//Other collision solution, but much more unrealistic
 			/*var bounce1:VectorModel = new VectorModel(0, 0, 0, 0, p1b.vx + p2a.vx, p1b.vy + p2a.vy);
 			var bounce2:VectorModel = new VectorModel(0, 0, 0, 0, p1a.vx + p2b.vx, p1a.vy + p2b.vy);
 			
