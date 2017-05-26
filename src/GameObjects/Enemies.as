@@ -22,6 +22,12 @@ package GameObjects
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			myScale = _scale;
 		}
+		public function set CubeColor(value:Number):void{ballImage.color = value;}
+		
+		public function get CubeColor ():Number 
+		{
+			return ballImage.color;
+		}
 		
 		//Event Handlers
 		private function onAdded(e:Event):void 
@@ -90,6 +96,7 @@ package GameObjects
 		{
 			_IsFreezed = true;
 			ballImage.alpha = 0.5;
+			ballImage.color = 0xFFFFFF;
 		}
 		
 		public function unfreeze():void 
@@ -97,6 +104,7 @@ package GameObjects
 			_IsFreezed = false;
 			
 			ballImage.alpha = 1;
+			ballImage.color = 0x8efe91;
 			
 			var alpha:Number = Math.random() * 2 * Math.PI;
 			Vx = Speed * Math.cos(alpha);
@@ -105,12 +113,12 @@ package GameObjects
 		
 		public function Destroy():void
 		{
-			TweenLite.to(ballImage, 0.2, {scale:1.5,color:0x000000, onComplete:continueDestroying});
+			TweenLite.to(ballImage, 0.2, {scale:0.8, color:0xffffff, onComplete:continueDestroying});
 		}
 		
 		private function continueDestroying():void 
 		{
-			TweenLite.to(ballImage, 0.2, {scale:0, alpha:0, onComplete:endDestroying})
+			TweenLite.to(ballImage, 0.2, {scale:0,color:0x000000, alpha:0, onComplete:endDestroying})
 		}
 		
 		private function endDestroying():void 

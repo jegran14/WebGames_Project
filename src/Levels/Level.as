@@ -29,6 +29,7 @@ package Levels
 		protected var pelotas:Vector.<Enemies>;
 		
 		protected var nballs:int;
+		protected var cubeColor:Number;
 		
 		protected var scoreText:TextField;
 		protected var score:Score;
@@ -49,7 +50,7 @@ package Levels
 		protected var shieldCollision:Sound = new Assets.ShieldCollision(); 
 	
 		
-		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg") 
+		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg", _cubeColor:Number = 0x00fcff) 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
@@ -57,7 +58,10 @@ package Levels
 			bg = new Image(Assets.getTexture(_bg));
 			nballs = _nbolas;
 			nextLvl = _nextLvl;
+			cubeColor = _cubeColor;
+			
 		}
+		
 		
 		public function get NextLvl():Level	{ return nextLvl; }
 		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
@@ -73,7 +77,6 @@ package Levels
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
-			stage.addEventListener(TouchEvent.TOUCH, onTouch);
 			addEventListener(DestroyBallEvent.DESTROYBALL, onDestroy);
 			
 			//Inicializar vector
@@ -152,9 +155,12 @@ package Levels
 				
 				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
 				
+				
 				pelotas.push(lasPelotasDeCarlos);
 				
 				addChild(lasPelotasDeCarlos);
+				
+				lasPelotasDeCarlos.CubeColor = cubeColor;
 			}
 		}
 		
@@ -208,6 +214,7 @@ package Levels
 				case "start":
 					if (startPlayerAnimation()) 
 					{
+						stage.addEventListener(TouchEvent.TOUCH, onTouch);
 						state = "playing";
 						drawGame();
 						player.createShield();
@@ -256,12 +263,12 @@ package Levels
 		{
 			player.Shoot();
 			
-		
+			var direction:VectorModel = new VectorModel(player.PosX, player.PosY, mPosx, mPosY);
 			
 			var bulletX:Number = player.bulletStartX;
 			var bulletY:Number = player.bulletStartY;
 			
-			var direction:VectorModel = new VectorModel(bulletX, bulletY, mPosx, mPosY);
+			
 			
 			var proyectil:Projectile = new Projectile(bulletX, bulletY, direction.angle);
 			
@@ -324,7 +331,6 @@ package Levels
 						{
 							pelotas[i].Destroy();
 							EnemyDestroy.play();
-							//removeChild(pelotas[i]);
 							pelotas.removeAt(i);
 							score.addScore();
 							return;
@@ -371,50 +377,11 @@ package Levels
 				pelotas.removeAt(j);
 			}
 			
-			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToResults"}, true));
-			/*//Textos a mostrar
-			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana",20, 0xFFFFFF, true);
-			showLevelScoreText.alignPivot();
-			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
-			showLevelScoreText.y =  stage.stageHeight / 2 - 50;
-			
-			var showTotalScoreText:TextField = new TextField (600, 100, "Total score:", "Verdana", 20, 0xFFFFFF, true);
-			showTotalScoreText.alignPivot();
-			showTotalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
-			showTotalScoreText.y =  stage.stageHeight / 2 - 50;
-			
-			
-			
-			finalScoreText.text = "" + score.GetTotalScore;
-			
 			stage.removeEventListener(TouchEvent.TOUCH, onTouch);
 			
-			scoreText.text = "" + score.GetScore;
-			scoreText.x = 0 + stage.stageWidth / 4;
-			scoreText.y = stage.stageHeight / 2;
-			scoreText.fontSize = 35;
-			
-			removeChild(player);
-
-			addChild(finalScoreText);
-			addChild(showTotalScoreText);
-			addChild(showLevelScoreText);
-			
-			//Show button and enable the trigger ivent
-			addEventListener(Event.TRIGGERED, onButtonClick);
-			menuButton.visible = true;
-			if(nextButton != null)
-				nextButton.visible = true;*/
+			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToResults"}, true));
 		}	
 		
-		/*private function onButtonClick(e:Event):void 
-		{
-			var Btn:Button = e.target as Button;
-			if (Btn == menuButton)
-				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
-			else
-				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToLvl"}, true));
-		}*/
 	}
 
 }

@@ -34,10 +34,6 @@ package GameObjects
 			//Cargar textura
 			ballImage = new Image(Assets.getTexture("Projectile"));
 			
-			//Escalar
-			/*ballImage.scaleX = 0.05;
-			ballImage.scaleY = 0.05;*/
-			
 			//cambiar pivote
 			ballImage.alignPivot();
 			
