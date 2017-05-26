@@ -33,6 +33,7 @@ package GameObjects
 		public function set PosY(y:Number):void { _posActual.y = y; }
 		public function set Vx(value:Number):void {_posAnterior.x = PosX - value; }
 		public function set Vy(value:Number):void {_posAnterior.y = PosY - value; }
+		public function set IsFreezed(value:Boolean):void { _IsFreezed = value; }
 		public function set SetX(value:Number):void 
 		{
 			_posAnterior.x = value - Vx; 

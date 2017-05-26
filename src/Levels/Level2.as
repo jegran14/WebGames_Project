@@ -1,14 +1,18 @@
 package Levels 
 {
+	import flash.media.Sound;
 	import starling.events.Event;
 	import starling.display.Image;
+	
 	public class Level2 extends Levels.Level 
 	{
 		private var frostCount:int;
+		private var enemyFreeze:Sound = new Assets.EnemyFreeze();
+		private var enemyUnfreeze:Sound = new Assets.EnemyUnfreeze();
 		
-		public function Level2() 
+		public function Level2(_nextLvl:Level = null) 
 		{
-			super(11,"PinkBg");
+			super(_nextLvl, 11,"PinkBg",0x8efe91);
 			frostCount = 0;
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 		}
@@ -25,38 +29,41 @@ package Levels
 			{
 				for (var i:int = pelotas.length - 1; i >= 0 ; i--)
 				{		
-					if (testBoundaries(pelotas[i]))
+					if (physics.testBoundaries(pelotas[i]))
 					{
-						bounceWithBoundarie(pelotas[i]);
+						physics.bounceWithBoundarie(pelotas[i]);
 					}
 					
 					for (var j:int = 0; j < i; j++ )
 					{
-						if (testBoundaries(pelotas[j]))
+						if (physics.testBoundaries(pelotas[j]))
 						{
-							bounceWithBoundarie(pelotas[j]);
+							physics.bounceWithBoundarie(pelotas[j]);
 						}
 						
-						if (!pelotas[i].IsFreezed && !pelotas[j].IsFreezed && collisionWithBalls(pelotas[i], pelotas[j]))
+						if (!pelotas[i].IsFreezed && !pelotas[j].IsFreezed && physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
-							bounceBalls(pelotas[i], pelotas[j]);
+							physics.bounceBalls(pelotas[i], pelotas[j]);
+							EnemyCollide.play();
 						}
 					}
 					
 					for (var k:int = proyectiles.length - 1; k >= 0; k--)
 					{
-						if (collisionWithBalls(pelotas[i], proyectiles[k]))
+						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
 							//Congelar o descongelar pelotas
 							if (pelotas[i].IsFreezed)
 							{
 								pelotas[i].unfreeze();
+								enemyUnfreeze.play();
 								frostCount--;
 								score.substractScore();
 							}
 							else
 							{
 								pelotas[i].freeze();
+								enemyFreeze.play();
 								frostCount++;
 								score.addScore();
 							}
@@ -67,9 +74,11 @@ package Levels
 						}
 					}
 					
-					if (collisionWithBalls(pelotas[i], player))
+					if (physics.collisionWithBalls(pelotas[i], player))
 					{
-						bounceWithPlayer(pelotas[i]);
+						physics.bounceWithPlayer(pelotas[i], player);
+						player.ExecuteShield();	
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();
@@ -79,7 +88,7 @@ package Levels
 		
 		override protected function isLevelFinished():Boolean 
 		{
-			return frostCount == nball;
+			return frostCount == nballs;
 		}
 		
 		override public function disposeTemporarily():void 

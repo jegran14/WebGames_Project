@@ -7,11 +7,14 @@ package
 	
 	public class Assets 
 	{
-		[Embed(source = "../media/graphics/cube.png")]
+		[Embed(source = "../media/graphics/CubeWhite.png")]
 		public static const EnemyCube:Class;
 		
 		[Embed(source = "../media/graphics/laser.png")]
 		public static const Projectile:Class;
+		
+		[Embed(source = "../media/graphics/center_trans.png")]
+		public static const Shield:Class;
 		
 		[Embed(source = "../media/graphics/rubik_ingame.png")]
 		public static const Player:Class;
@@ -24,6 +27,9 @@ package
 		
 		[Embed(source = "../media/graphics/bg_pink.jpg")]
 		public static const PinkBg:Class;
+		
+		[Embed(source = "../media/graphics/bg_3.jpg")]
+		public static const Lvl3Bg:Class;
 		
 		[Embed(source = "../media/graphics/menu_bg.jpg")]
 		public static const MenuBg:Class;
@@ -75,7 +81,22 @@ package
 		
 		[Embed(source="../media/sounds/laserGun.mp3")]
 		public static const LaserGun:Class;
+		
+		[Embed(source="../media/sounds/EnemyCollide.mp3")]
+		public static const EnemyCollide:Class;
 
+		[Embed(source="../media/sounds/EnemyDestroy.mp3")]
+		public static const EnemyDestroy:Class;
+		
+		[Embed(source="../media/sounds/EnemyFreeze.mp3")]
+		public static const EnemyFreeze:Class;
+		
+		[Embed(source="../media/sounds/EnemyUnfreezed.mp3")]
+		public static const EnemyUnfreeze:Class;
+		
+		[Embed(source="../media/sounds/ShieldImpact.mp3")]
+		public static const ShieldCollision:Class;
+		
 		private static var gameTextures:Dictionary = new Dictionary();
 		
 		public static function getTexture(name:String):Texture

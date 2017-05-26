@@ -4,7 +4,7 @@ package Levels
 	import Utilites.*;
 	import com.friendsofed.vector.*;
 	import com.friendsofed.utils.TextBox;
-	import events.NavigationEnvent;
+	import events.*;
 	import flash.geom.Point;
 	import flash.utils.Timer;
 	import starling.display.Button;
@@ -15,6 +15,9 @@ package Levels
 	import starling.textures.Texture;
 	import starling.display.Image;
 	import flash.display.Bitmap;
+	import flash.media.Sound;
+	
+	
 	
 	public class Level extends Sprite
 	{	
@@ -25,30 +28,45 @@ package Levels
 		protected var proyectiles:Vector.<Projectile>;
 		protected var pelotas:Vector.<Enemies>;
 		
-		protected var nball:int;
-		
-		protected var v0:VectorModel;
-		protected var v1:VectorModel;
-		protected var v2:VectorModel;
-		protected var v3:VectorModel;
+		protected var nballs:int;
+		protected var cubeColor:Number;
 		
 		protected var scoreText:TextField;
 		protected var score:Score;
 		protected var minuteTimer:Timer;
 		protected var finalScoreText:TextField;
+		protected var scoreNumber:TextField;
 		
 		protected var menuButton:Button;
+		protected var nextButton:Button;
 		
 		protected var state:String;
 		
-		public function Level(_nbolas:int = 10, _bg:String = "BlueBg") 
+		protected var physics:Physics
+		
+		protected var nextLvl:Level;
+		protected var EnemyCollide:Sound = new Assets.EnemyCollide(); 
+		protected var EnemyDestroy:Sound = new Assets.EnemyDestroy(); 
+		protected var shieldCollision:Sound = new Assets.ShieldCollision(); 
+	
+		
+		public function Level(_nextLvl:Level = null, _nbolas:int = 10, _bg:String = "BlueBg", _cubeColor:Number = 0x00fcff) 
 		{
 			super();
 			addEventListener(Event.ADDED_TO_STAGE, onAdded);
 			//Cargar textura
 			bg = new Image(Assets.getTexture(_bg));
-			nball = _nbolas;
+			nballs = _nbolas;
+			nextLvl = _nextLvl;
+			cubeColor = _cubeColor;
+			
 		}
+		
+		
+		public function get NextLvl():Level	{ return nextLvl; }
+		public function set NextLvl(_nextLvl:Level):void { nextLvl = _nextLvl; }
+		public function get LvlScore():int { return score.GetTotalScore; }
+		public function get Bg():Image { return bg;}
 		
 		private function onAdded(e:Event):void 
 		{		
@@ -60,46 +78,33 @@ package Levels
 			removeEventListener(Event.ADDED_TO_STAGE, onAdded);
 			
 			stage.addEventListener(TouchEvent.TOUCH, onTouch);
-			
-			
-			
+			addEventListener(DestroyBallEvent.DESTROYBALL, onDestroy);
 			
 			//Inicializar vector
 			proyectiles = new Vector.<Projectile>();
 			pelotas = new Vector.<Enemies>();
 			
-			//Cosas del nivel		
-			
-			//inicialización de los vectores para los cálculos de colisión
-			v0 = new VectorModel();
-			v1 = new VectorModel();
-			v2 = new VectorModel();
-			v3 = new VectorModel();	
+			//Cosas del nivel	
 			
 			//Rellenar array de pelotas
-			for (var i:int = 0; i < nball; i++)
-			{
-				var initX:int = Math.random() * stage.stageWidth;
-				var initY:int = Math.random() * stage.stageHeight;
-				var angle:Number = Math.random() * 2 * Math.PI;
-				
-				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
-				
-				pelotas.push(lasPelotasDeCarlos);
-				
-				addChild(lasPelotasDeCarlos);
-			}
+			createBalls(0.6);
 			
 			//Configurar temporizador y puntuación
 			score = new Score();
 			
-			scoreText = new TextField (300, 100, "Score = 5000", "MyFont", 30, 0xFFFFFF , false);
+			scoreText = new TextField (300, 100, "Score = ", "MyFont", 30, 0xFFFFFF , false);
 			scoreText.alignPivot();
-			scoreText.x = 100;
+			scoreText.x = 75;
 			scoreText.y = 20;
 			addChild(scoreText);
 			
-			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 35, 0x880000 , false);
+			scoreNumber = new TextField (300, 100, "5000 ", "MyFont", 30, 0xFFFFFF , false);
+			scoreNumber.alignPivot();
+			scoreNumber.x =  scoreNumber.width/2 ;
+			scoreNumber.y = 20;
+			addChild(scoreNumber);
+			
+			finalScoreText = new TextField (stage.stageWidth - stage.stageWidth / 4, stage.stageHeight / 2, "Score = 5000", "MyFont", 35, 0xbf8f00 , false);
 			finalScoreText.alignPivot();
 			finalScoreText.x  = stage.stageWidth - stage.stageWidth / 4;
 			finalScoreText.y =  stage.stageHeight / 2;
@@ -108,12 +113,56 @@ package Levels
 			menuButton = new Button(Assets.getTexture("BackBtnOff"));
 			menuButton.overState = Assets.getTexture("BackBtnOn");
 			menuButton.alignPivot();
-			menuButton.x = stage.stageWidth - 50;
-			menuButton.y = 20;
+			menuButton.x = stage.stageWidth - 50 - menuButton.width;
+			menuButton.y = 10 + menuButton.height;
 			menuButton.visible = false;
 			addChild(menuButton);
 			
+			//Inicializar y ocultar boton para pasar al siguiente nivel
+			if (nextLvl != null)
+			{
+				nextButton = new Button(Assets.getTexture("BackBtnOff"));
+				nextButton.overState = Assets.getTexture("BackBtnOn");
+				nextButton.alignPivot();
+				nextButton.x = menuButton.x + menuButton.width + 10;
+				nextButton.y = 10 + nextButton.height;
+				nextButton.rotation = Math.PI;
+				nextButton.visible = false;
+				addChild(nextButton);
+			}
+			
+			
+			//Enable Physics
+			physics = new Physics();
+			addChild(physics);
+			
 			shortTimer();
+		}
+		
+		private function onDestroy(e:DestroyBallEvent):void 
+		{
+			var ball:Ball = e.target as Ball;
+			
+			removeChild(ball);
+		}
+		
+		protected function createBalls(scale:Number):void 
+		{
+			for (var i:int = 0; i < nballs; i++)
+			{
+				var initX:int = Math.random() * stage.stageWidth;
+				var initY:int = Math.random() * stage.stageHeight;
+				var angle:Number = Math.random() * 2 * Math.PI;
+				
+				var lasPelotasDeCarlos:Enemies = new Enemies(initX, initY, angle);
+				
+				
+				pelotas.push(lasPelotasDeCarlos);
+				
+				addChild(lasPelotasDeCarlos);
+				
+				lasPelotasDeCarlos.CubeColor = cubeColor;
+			}
 		}
 		
 		//Control de visibilidad del nivel
@@ -168,6 +217,7 @@ package Levels
 					{
 						state = "playing";
 						drawGame();
+						player.createShield();
 					}
 					break;
 			}
@@ -204,7 +254,7 @@ package Levels
 		private function ontick(e:TimerEvent):void 
 		{
 			score.updateScore(score);
-			scoreText.text = "Score = " + score.GetScore;
+			scoreNumber.text = "" + score.GetScore;
 		}
 		
 		//Crear un nuevo proyectil cuando se dispare, y ejecutar la animación del jugador
@@ -217,6 +267,8 @@ package Levels
 			
 			var bulletX:Number = player.bulletStartX;
 			var bulletY:Number = player.bulletStartY;
+			
+			
 			
 			var proyectil:Projectile = new Projectile(bulletX, bulletY, direction.angle);
 			
@@ -234,7 +286,7 @@ package Levels
 				for (var i:int = proyectiles.length-1; i >= 0; i--)
 				{
 					//test collisions
-					if (!testBoundaries(proyectiles[i]))
+					if (!physics.testBoundaries(proyectiles[i]))
 					{					
 						proyectiles[i].UpdateMovement();
 					}
@@ -254,38 +306,43 @@ package Levels
 			{
 				for (var i:int = pelotas.length - 1; i >= 0 ; i--)
 				{		
-					if (testBoundaries(pelotas[i]))
+					if (physics.testBoundaries(pelotas[i]))
 					{
-						bounceWithBoundarie(pelotas[i]);
+						physics.bounceWithBoundarie(pelotas[i]);
 					}
 					
 					for (var j:int = 0; j < i; j++ )
 					{
-						if (testBoundaries(pelotas[j]))
+						if (physics.testBoundaries(pelotas[j]))
 						{
-							bounceWithBoundarie(pelotas[j]);
+							physics.bounceWithBoundarie(pelotas[j]);
 						}
 						
-						if (collisionWithBalls(pelotas[i], pelotas[j]))
+						if (physics.collisionWithBalls(pelotas[i], pelotas[j]))
 						{
-							bounceBalls(pelotas[i], pelotas[j]);
+							physics.bounceBalls(pelotas[i], pelotas[j]);
+							EnemyCollide.play();
 						}
 					}
 					
 					for (var k:int = proyectiles.length - 1; k >= 0; k--)
 					{
-						if (collisionWithBalls(pelotas[i], proyectiles[k]))
+						if (physics.collisionWithBalls(pelotas[i], proyectiles[k]))
 						{
-							removeChild(pelotas[i]);
+							pelotas[i].Destroy();
+							EnemyDestroy.play();
+							//removeChild(pelotas[i]);
 							pelotas.removeAt(i);
 							score.addScore();
 							return;
 						}
 					}
 					
-					if (collisionWithBalls(pelotas[i], player))
+					if (physics.collisionWithBalls(pelotas[i], player))
 					{
-						bounceWithPlayer(pelotas[i]);
+						physics.bounceWithPlayer(pelotas[i], player);
+						player.ExecuteShield();
+						shieldCollision.play();
 					}
 					
 					pelotas[i].UpdateMovement();
@@ -293,168 +350,7 @@ package Levels
 			}
 		}
 		
-		//Seleccionar con que lateral se va a comprobar la colisión
-		protected function testBoundaries(b:Ball):Boolean
-		{	
-			//Comprobar dirección en el eje X para decidir con que pared comprobamos la colisión
-			if (b.Vx < 0)
-			{
-				//Vector pared izquierda
-				v2.update(0, stage.stageHeight, 0, 0);
-			}
-			else
-			{
-				//Vector pared derecha
-				v2.update(stage.stageWidth, 0, stage.stageWidth, stage.stageHeight);
-			}
-			
-			//Comprobar colision con las paredes laterales, y en caso afirmativo salir devolviendo verdadero
-			if (collideWithBoundarie(b))
-			{
-				return true;
-			}
-			
-			//En caso negativo comprobamos la colisión con las paredes superior e inferior
-			if (b.Vy < 0)
-			{
-				//Vector pared superior
-				v2.update(0, 0, stage.stageWidth, 0);
-			}
-			else
-			{
-				//Vector pared inferior
-				v2.update(stage.stageWidth, stage.stageHeight, 0, stage.stageHeight);	
-			}	
-			
-			//Comprobar colision con las paredes inferior y superior, y en caso afirmativo salir devolviendo verdadero
-			if (collideWithBoundarie(b))
-			{
-				return true;
-			}
-			
-			return b.PosX < 0 || b.PosY < 0 || b.PosX > stage.stageWidth || b.PosY > stage.stageHeight;
-		}
-		
-		//Comprobar la colisión con una barrera
-		private function collideWithBoundarie(b:Ball):Boolean 
-		{
-			v0.update(b.PosX, b.PosY, b.PosX + v2.ln.dx * b.getRadius(), b.PosY + v2.ln.dy * b.getRadius());
-			
-			v1.update(v0.b.x, v0.b.y, v0.b.x + b.Vx, v0.b.y + b.Vy);
-			
-			v3.update(v1.a.x, v1.a.y, v2.a.x, v2.a.y);
-			
-			var dp1:Number = VectorMath.dotProduct(v3, v2);
-			var dp2:Number = VectorMath.dotProduct(v3, v2.ln);
-			
-			if (dp1 > -v2.m && dp1 < 0)
-			{				
-				if (dp2 <= 0)
-				{
-					return true;
-				}
-			}
-			
-			return false;
-		}
-		
-		//Calcular rebote contra una de las barreras
-		protected function bounceWithBoundarie(b:Ball):void
-		{
-			var collisionForce_Vx:Number;
-			var collisionForce_Vy:Number;
-			var overlap:Number;
-			
-			overlap = b.getRadius() - v0.m;
-					
-			b.SetX = b.PosX - (overlap * v0.dx);
-			b.SetY = b.PosY - (overlap * v0.dy);
-			
-			var motion:VectorModel = new VectorModel(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
-			
-			var bounce:VectorModel = VectorMath.bounce(motion, v0.ln);
-			
-			b.Vx = bounce.vx;
-			b.Vy = bounce.vy;
-		}
-		
-		//Comprobar colisión entre varios objetos herederos de la clase bola
-		protected function collisionWithBalls(b1:Ball, b2:Ball):Boolean
-		{			
-			v0.update(b1.PosX, b1.PosY, b2.PosX, b2.PosY);
-			
-			var totalRadii:Number = b1.getRadius() + b2.getRadius();
-			
-			if (v0.m < totalRadii)
-			{
-				return true;
-			}
-			
-			return false;
-		}
-		
-		//Calcular rebote entre varias bolas en movimiento
-		protected function bounceBalls(b1:Ball, b2:Ball):void
-		{
-			var totalRadii:Number = b1.getRadius() + b2.getRadius();
-			
-			var overlap:Number = totalRadii - v0.m;
-					
-			var collision_Vx:Number = Math.abs(v0.dx * overlap);
-			var collision_Vy:Number = Math.abs(v0.dy * overlap);
-			
-			var xSide:int;
-			var ySide:int;
-			
-			b1.PosX > b2.PosX ? xSide = 1 : xSide = -1;
-			b1.PosY > b2.PosY ? ySide = 1 : ySide = -1;
-			
-			b1.SetX = b1.PosX + (collision_Vx * xSide);
-			b1.SetY = b1.PosY + (collision_Vy * ySide);
-			
-			b2.SetX = b2.PosX + (collision_Vx * -xSide);
-			b2.SetY = b2.PosY + (collision_Vy * -ySide);
-			
-			v1.update(b1.PosX, b1.PosY, b1.PosX + b1.Vx, b1.PosY + b1.Vy);
-			v2.update(b2.PosX, b2.PosY, b2.PosX + b2.Vx, b2.PosY + b2.Vy);
-			
-			var p1a:VectorModel = VectorMath.project(v1, v0);
-			var p1b:VectorModel = VectorMath.project(v1, v0.ln);
-			
-			var p2a:VectorModel = VectorMath.project(v2, v0);
-			var p2b:VectorModel = VectorMath.project(v2, v0.ln);
-			
-			/*var bounce1:VectorModel = new VectorModel(0, 0, 0, 0, p1b.vx + p2a.vx, p1b.vy + p2a.vy);
-			var bounce2:VectorModel = new VectorModel(0, 0, 0, 0, p1a.vx + p2b.vx, p1a.vy + p2b.vy);
-			
-			b1.Vx = b1.Speed*bounce1.dx;
-			b1.Vy = b1.Speed*bounce1.dy;
-			
-			b2.Vx = b2.Speed*bounce2.dx;
-			b2.Vy = b2.Speed*bounce2.dy;*/
-		
-			b1.Vx = p1b.vx + p2a.vx;
-			b1.Vy = p1b.vy + p2a.vy;
-			
-			b2.Vx = p1a.vx + p2b.vx;
-			b2.Vy = p1a.vy + p2b.vy;
-		}
-		
-		protected function bounceWithPlayer(b:Ball):void 
-		{
-			var totalRadii:Number = b.getRadius() + player.getRadius();
-			var overlap:Number = totalRadii - v0.m;
-			
-			b.SetX = b.PosX - (overlap * v0.dx);
-			b.SetY = b.PosY - (overlap * v0.dy);
-			
-			v1.update(b.PosX, b.PosY, b.PosX + b.Vx, b.PosY + b.Vy);
-			
-			var bounce:VectorModel = VectorMath.bounce(v1, v0.ln);
-			
-			b.Vx = bounce.vx;
-			b.Vy = bounce.vy;
-		}
+
 		
 		//Final de partida
 		protected function isLevelFinished():Boolean
@@ -482,7 +378,8 @@ package Levels
 				pelotas.removeAt(j);
 			}
 			
-			//Textos a mostrar
+			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToResults"}, true));
+			/*//Textos a mostrar
 			var showLevelScoreText:TextField = new TextField (300, 100, "Level score:", "Verdana",20, 0xFFFFFF, true);
 			showLevelScoreText.alignPivot();
 			showLevelScoreText.x  = 0 + stage.stageWidth / 4;
@@ -513,12 +410,18 @@ package Levels
 			//Show button and enable the trigger ivent
 			addEventListener(Event.TRIGGERED, onButtonClick);
 			menuButton.visible = true;
+			if(nextButton != null)
+				nextButton.visible = true;*/
 		}	
 		
-		private function onButtonClick(e:Event):void 
+		/*private function onButtonClick(e:Event):void 
 		{
-			dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
-		}
+			var Btn:Button = e.target as Button;
+			if (Btn == menuButton)
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToMenu"}, true)); 
+			else
+				dispatchEvent(new NavigationEnvent(NavigationEnvent.CHANGE_SCREEN, {id: "frmLvlToLvl"}, true));
+		}*/
 	}
 
 }

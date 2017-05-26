@@ -8,6 +8,7 @@ package GameObjects
 	import starling.events.*;
 	import starling.textures.Texture;
 	import flash.media.Sound;
+	import com.greensock.TweenLite;
 	
 	public class Cannon extends Ball
 	{		
@@ -16,6 +17,9 @@ package GameObjects
 		private var by:Number;
 		private var bulletRad:Number;
 		private var laserGun:Sound = new Assets.LaserGun(); 
+		
+		private var shield:Image;
+		
 		
 		public function Cannon(posX:Number, posY:Number) 
 		{
@@ -49,16 +53,12 @@ package GameObjects
 		}
 		
 		//Otras funciones
-		override public function getRadius():Number {return cannon.width / 2; }
+		override public function getRadius():Number {return (shield.width / 2 )* 0.8; }
 		
 		private function create():void
 		{
 			//Cargar textura
 			cannon = new Image(Assets.getTexture("Player"));;
-			
-			//Escalar
-			//cannon.scaleX = 0.7;
-			//cannon.scaleY = 0.7;
 			
 			//Cambiar pivote
 			cannon.alignPivot();
@@ -80,6 +80,15 @@ package GameObjects
 			//Añadirlo al stage
 			this.addChild(cannon);
 		}
+		//Escudo
+		public function createShield():void
+		{
+			shield = new Image(Assets.getTexture("Shield"));
+			shield.alignPivot();
+			shield.x = PosX;
+			shield.y = PosY;
+			shield.scale = 0.3;
+		}
 		
 		private function rotate(vector:VectorModel):void
 		{
@@ -97,6 +106,16 @@ package GameObjects
 			
 			laserGun.play();
 		
+		}
+		public function ExecuteShield():void
+		{
+			addChild(shield);
+			TweenLite.to(shield, 0.2, {alpha:0.2, onComplete:remove_shield});
+		}
+		private function remove_shield():void 
+		{
+			removeChild(shield);
+			shield.alpha = 1;
 		}
 	}
 }
