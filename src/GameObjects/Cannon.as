@@ -88,6 +88,8 @@ package GameObjects
 			shield.x = PosX;
 			shield.y = PosY;
 			shield.scale = 0.3;
+			shield.visible = false;
+			addChild(shield);
 		}
 		
 		private function rotate(vector:VectorModel):void
@@ -109,12 +111,12 @@ package GameObjects
 		}
 		public function ExecuteShield():void
 		{
-			addChild(shield);
+			shield.visible = true;
 			TweenLite.to(shield, 0.2, {alpha:0.2, onComplete:remove_shield});
 		}
 		private function remove_shield():void 
 		{
-			removeChild(shield);
+			shield.visible = false;
 			shield.alpha = 1;
 		}
 	}
